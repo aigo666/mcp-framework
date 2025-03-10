@@ -1,0 +1,35 @@
+{
+  "name": "MCP Development Framework",
+  "description": "A powerful framework for creating custom tools that interact with large language models",
+  "repository": "https://github.com/your-username/mcp-development-framework",
+  "keywords": ["python", "mcp", "llm", "pdf", "tool", "framework"],
+  "env": {
+    "MCP_SERVER_PORT": {
+      "description": "Port to run the server on",
+      "value": "8000",
+      "required": false
+    },
+    "MCP_SERVER_HOST": {
+      "description": "Host to bind the server to",
+      "value": "0.0.0.0",
+      "required": false
+    },
+    "DEBUG": {
+      "description": "Enable debug mode",
+      "value": "false",
+      "required": false
+    },
+    "MCP_USER_AGENT": {
+      "description": "Custom User-Agent for website fetching",
+      "value": "MCP Development Framework (github.com/modelcontextprotocol/python-sdk)",
+      "required": false
+    }
+  },
+  "stack": "container",
+  "formation": {
+    "web": {
+      "quantity": 1,
+      "size": "eco"
+    }
+  }
+} 

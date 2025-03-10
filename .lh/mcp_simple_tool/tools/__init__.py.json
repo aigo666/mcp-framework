@@ -1,0 +1,34 @@
+{
+    "sourceFile": "mcp_simple_tool/tools/__init__.py",
+    "activeCommit": 0,
+    "commits": [
+        {
+            "activePatchIndex": 4,
+            "patches": [
+                {
+                    "date": 1741332178163,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n"
+                },
+                {
+                    "date": 1741332320523,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -2,8 +2,17 @@\n 工具包，包含所有可用的工具\n \"\"\"\n \n from .base import BaseTool\n-# 工具将在各自的模块中创建并在这里导入\n+from .web_tool import WebTool\n+from .pdf_tool import PdfTool\n+from .quick_pdf_tool import QuickPdfTool\n\\ No newline at end of file\n \n-# 导出的工具列表\n-__all__ = ['BaseTool'] \n+# 导出的所有工具类\n+__all__ = ['BaseTool', 'WebTool', 'PdfTool', 'QuickPdfTool']\n+\n+# 所有工具的实例列表，用于自动注册\n+all_tools = [\n+    WebTool(),\n+    PdfTool(),\n+    QuickPdfTool()\n+] \n\\ No newline at end of file\n"
+                },
+                {
+                    "date": 1741332588660,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -1,18 +1,1 @@\n-\"\"\"\n-工具包，包含所有可用的工具\n-\"\"\"\n-\n-from .base import BaseTool\n-from .web_tool import WebTool\n-from .pdf_tool import PdfTool\n-from .quick_pdf_tool import QuickPdfTool\n-\n-# 导出的所有工具类\n-__all__ = ['BaseTool', 'WebTool', 'PdfTool', 'QuickPdfTool']\n-\n-# 所有工具的实例列表，用于自动注册\n-all_tools = [\n-    WebTool(),\n-    PdfTool(),\n-    QuickPdfTool()\n-] \n\\ No newline at end of file\n+ \n\\ No newline at end of file\n"
+                },
+                {
+                    "date": 1741333243581,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -1,4 +1,12 @@\n+'''\n+Author: 刘彦志 yanzhiliu@trip.com\n+Date: 2025-03-07 15:40:36\n+LastEditors: 刘彦志 yanzhiliu@trip.com\n+LastEditTime: 2025-03-07 15:40:42\n+FilePath: /mcp-development-framework/mcp_simple_tool/tools/__init__.py\n+Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE\n+'''\n from typing import Dict, Type, List\n import mcp.types as types\n \n # 工具基类\n"
+                },
+                {
+                    "date": 1741337157527,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -1,9 +1,9 @@\n '''\n Author: 刘彦志 yanzhiliu@trip.com\n Date: 2025-03-07 15:40:36\n LastEditors: 刘彦志 yanzhiliu@trip.com\n-LastEditTime: 2025-03-07 16:45:18\n+LastEditTime: 2025-03-07 16:45:57\n FilePath: /mcp-development-framework/mcp_simple_tool/tools/__init__.py\n Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE\n '''\n from typing import Dict, Type, List\n"
+                }
+            ],
+            "date": 1741332178163,
+            "name": "Commit-0",
+            "content": "\"\"\"\n工具包，包含所有可用的工具\n\"\"\"\n\nfrom .base import BaseTool\n# 工具将在各自的模块中创建并在这里导入\n\n# 导出的工具列表\n__all__ = ['BaseTool'] "
+        }
+    ]
+}

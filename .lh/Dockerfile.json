@@ -1,0 +1,50 @@
+{
+    "sourceFile": "Dockerfile",
+    "activeCommit": 0,
+    "commits": [
+        {
+            "activePatchIndex": 8,
+            "patches": [
+                {
+                    "date": 1741245157547,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n"
+                },
+                {
+                    "date": 1741258783838,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -8,8 +8,11 @@\n RUN apt-get update && apt-get install -y \\\n     build-essential \\\n     curl \\\n     poppler-utils \\\n+    tesseract-ocr \\\n+    tesseract-ocr-eng \\\n+    tesseract-ocr-chi-sim \\\n     && rm -rf /var/lib/apt/lists/*\n \n # Copy project files\n COPY . .\n"
+                },
+                {
+                    "date": 1741259379637,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -8,11 +8,8 @@\n RUN apt-get update && apt-get install -y \\\n     build-essential \\\n     curl \\\n     poppler-utils \\\n-    tesseract-ocr \\\n-    tesseract-ocr-eng \\\n-    tesseract-ocr-chi-sim \\\n     && rm -rf /var/lib/apt/lists/*\n \n # Copy project files\n COPY . .\n"
+                },
+                {
+                    "date": 1741259527600,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -8,8 +8,11 @@\n RUN apt-get update && apt-get install -y \\\n     build-essential \\\n     curl \\\n     poppler-utils \\\n+    tesseract-ocr \\\n+    tesseract-ocr-chi-sim \\\n+    tesseract-ocr-eng \\\n     && rm -rf /var/lib/apt/lists/*\n \n # Copy project files\n COPY . .\n"
+                },
+                {
+                    "date": 1741259592267,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -8,11 +8,8 @@\n RUN apt-get update && apt-get install -y \\\n     build-essential \\\n     curl \\\n     poppler-utils \\\n-    tesseract-ocr \\\n-    tesseract-ocr-chi-sim \\\n-    tesseract-ocr-eng \\\n     && rm -rf /var/lib/apt/lists/*\n \n # Copy project files\n COPY . .\n"
+                },
+                {
+                    "date": 1741496348552,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -13,12 +13,12 @@\n \n # Copy project files\n COPY . .\n \n-# Install the package in editable mode\n-RUN pip install --no-cache-dir -e \".[dev]\"\n+# Install the package in editable mode with proper path\n+RUN pip install --no-cache-dir -e .\n \n # Expose the port\n EXPOSE 8000\n \n\\ No newline at end of file\n # Run the server with SSE transport\n-CMD [\"mcp-simple-tool\", \"--transport\", \"sse\", \"--port\", \"8000\"] \n+CMD [\"python\", \"-m\", \"mcp_simple_tool\", \"--transport\", \"sse\", \"--port\", \"8000\"] \n\\ No newline at end of file\n"
+                },
+                {
+                    "date": 1741496544769,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -20,5 +20,5 @@\n # Expose the port\n EXPOSE 8000\n \n # Run the server with SSE transport\n-CMD [\"python\", \"-m\", \"mcp_simple_tool\", \"--transport\", \"sse\", \"--port\", \"8000\"] \n\\ No newline at end of file\n+CMD [\"python\", \"-m\", \"mcp_tool\", \"--transport\", \"sse\", \"--port\", \"8000\"] \n\\ No newline at end of file\n"
+                },
+                {
+                    "date": 1741529804201,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -20,5 +20,5 @@\n # Expose the port\n EXPOSE 8000\n \n # Run the server with SSE transport\n-CMD [\"python\", \"-m\", \"mcp_tool\", \"--transport\", \"sse\", \"--port\", \"8000\"] \n\\ No newline at end of file\n+CMD [\"python\", \"-m\", \"mcp_simple_tool\", \"--transport\", \"sse\", \"--port\", \"8000\"] \n\\ No newline at end of file\n"
+                },
+                {
+                    "date": 1741529967474,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -20,5 +20,5 @@\n # Expose the port\n EXPOSE 8000\n \n # Run the server with SSE transport\n-CMD [\"python\", \"-m\", \"mcp_simple_tool\", \"--transport\", \"sse\", \"--port\", \"8000\"] \n\\ No newline at end of file\n+CMD [\"python\", \"-m\", \"mcp_tool\", \"--transport\", \"sse\", \"--port\", \"8000\"] \n\\ No newline at end of file\n"
+                }
+            ],
+            "date": 1741245157547,
+            "name": "Commit-0",
+            "content": "# Use Python 3.10 slim image as base\nFROM python:3.10-slim\n\n# Set working directory\nWORKDIR /app\n\n# Install build dependencies and curl for healthcheck\nRUN apt-get update && apt-get install -y \\\n    build-essential \\\n    curl \\\n    poppler-utils \\\n    && rm -rf /var/lib/apt/lists/*\n\n# Copy project files\nCOPY . .\n\n# Install the package in editable mode\nRUN pip install --no-cache-dir -e \".[dev]\"\n\n# Expose the port\nEXPOSE 8000\n\n# Run the server with SSE transport\nCMD [\"mcp-simple-tool\", \"--transport\", \"sse\", \"--port\", \"8000\"] "
+        }
+    ]
+}

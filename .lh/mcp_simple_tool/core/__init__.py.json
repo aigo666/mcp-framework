@@ -1,0 +1,18 @@
+{
+    "sourceFile": "mcp_simple_tool/core/__init__.py",
+    "activeCommit": 0,
+    "commits": [
+        {
+            "activePatchIndex": 0,
+            "patches": [
+                {
+                    "date": 1741332330423,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n"
+                }
+            ],
+            "date": 1741332330423,
+            "name": "Commit-0",
+            "content": "\"\"\"\n核心功能模块\n\"\"\" "
+        }
+    ]
+}

@@ -1,0 +1,66 @@
+{
+    "sourceFile": "pyproject.toml",
+    "activeCommit": 0,
+    "commits": [
+        {
+            "activePatchIndex": 12,
+            "patches": [
+                {
+                    "date": 1741245105746,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n"
+                },
+                {
+                    "date": 1741252123512,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -24,9 +24,10 @@\n     \"httpx>=0.27\", \n     \"mcp\",\n     \"PyPDF2>=3.0.0\",\n     \"pdf2image>=1.16.0\",\n-    \"Pillow>=9.0.0\"\n+    \"Pillow>=9.0.0\",\n+    \"pymupdf4llm>=0.1.0\"\n ]\n \n [project.scripts]\n mcp-simple-tool = \"mcp_simple_tool.server:main\"\n"
+                },
+                {
+                    "date": 1741252296913,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -25,9 +25,9 @@\n     \"mcp\",\n     \"PyPDF2>=3.0.0\",\n     \"pdf2image>=1.16.0\",\n     \"Pillow>=9.0.0\",\n-    \"pymupdf4llm>=0.1.0\"\n+    \"pymupdf4llm==0.0.17\"\n ]\n \n [project.scripts]\n mcp-simple-tool = \"mcp_simple_tool.server:main\"\n"
+                },
+                {
+                    "date": 1741258774131,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -25,9 +25,11 @@\n     \"mcp\",\n     \"PyPDF2>=3.0.0\",\n     \"pdf2image>=1.16.0\",\n     \"Pillow>=9.0.0\",\n-    \"pymupdf4llm==0.0.17\"\n+    \"pymupdf4llm==0.0.17\",\n+    \"pytesseract>=0.3.10\",\n+    \"opencv-python-headless>=4.8.0\"\n ]\n \n [project.scripts]\n mcp-simple-tool = \"mcp_simple_tool.server:main\"\n"
+                },
+                {
+                    "date": 1741259378551,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -25,11 +25,9 @@\n     \"mcp\",\n     \"PyPDF2>=3.0.0\",\n     \"pdf2image>=1.16.0\",\n     \"Pillow>=9.0.0\",\n-    \"pymupdf4llm==0.0.17\",\n-    \"pytesseract>=0.3.10\",\n-    \"opencv-python-headless>=4.8.0\"\n+    \"pymupdf4llm==0.0.17\"\n ]\n \n [project.scripts]\n mcp-simple-tool = \"mcp_simple_tool.server:main\"\n"
+                },
+                {
+                    "date": 1741259515121,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -25,9 +25,12 @@\n     \"mcp\",\n     \"PyPDF2>=3.0.0\",\n     \"pdf2image>=1.16.0\",\n     \"Pillow>=9.0.0\",\n-    \"pymupdf4llm==0.0.17\"\n+    \"pymupdf4llm==0.0.17\",\n+    \"opencv-python-headless>=4.5.0\",\n+    \"pytesseract>=0.3.8\",\n+    \"numpy>=1.20.0\"\n ]\n \n [project.scripts]\n mcp-simple-tool = \"mcp_simple_tool.server:main\"\n"
+                },
+                {
+                    "date": 1741259590629,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -25,12 +25,9 @@\n     \"mcp\",\n     \"PyPDF2>=3.0.0\",\n     \"pdf2image>=1.16.0\",\n     \"Pillow>=9.0.0\",\n-    \"pymupdf4llm==0.0.17\",\n-    \"opencv-python-headless>=4.5.0\",\n-    \"pytesseract>=0.3.8\",\n-    \"numpy>=1.20.0\"\n+    \"pymupdf4llm==0.0.17\"\n ]\n \n [project.scripts]\n mcp-simple-tool = \"mcp_simple_tool.server:main\"\n"
+                },
+                {
+                    "date": 1741260619388,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -25,9 +25,10 @@\n     \"mcp\",\n     \"PyPDF2>=3.0.0\",\n     \"pdf2image>=1.16.0\",\n     \"Pillow>=9.0.0\",\n-    \"pymupdf4llm==0.0.17\"\n+    \"pymupdf4llm==0.0.17\",\n+    \"PyMuPDF>=1.22.0\"\n ]\n \n [project.scripts]\n mcp-simple-tool = \"mcp_simple_tool.server:main\"\n"
+                },
+                {
+                    "date": 1741332586798,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -25,10 +25,9 @@\n     \"mcp\",\n     \"PyPDF2>=3.0.0\",\n     \"pdf2image>=1.16.0\",\n     \"Pillow>=9.0.0\",\n-    \"pymupdf4llm==0.0.17\",\n-    \"PyMuPDF>=1.22.0\"\n+    \"pymupdf4llm==0.0.17\"\n ]\n \n [project.scripts]\n mcp-simple-tool = \"mcp_simple_tool.server:main\"\n"
+                },
+                {
+                    "date": 1741335095744,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -25,9 +25,10 @@\n     \"mcp\",\n     \"PyPDF2>=3.0.0\",\n     \"pdf2image>=1.16.0\",\n     \"Pillow>=9.0.0\",\n-    \"pymupdf4llm==0.0.17\"\n+    \"pymupdf4llm==0.0.17\",\n+    \"PyMuPDF>=1.22.0\"\n ]\n \n [project.scripts]\n mcp-simple-tool = \"mcp_simple_tool.server:main\"\n"
+                },
+                {
+                    "date": 1741337118402,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -26,9 +26,10 @@\n     \"PyPDF2>=3.0.0\",\n     \"pdf2image>=1.16.0\",\n     \"Pillow>=9.0.0\",\n     \"pymupdf4llm==0.0.17\",\n-    \"PyMuPDF>=1.22.0\"\n+    \"PyMuPDF>=1.22.0\",\n+    \"python-docx>=0.8.11\"\n ]\n \n [project.scripts]\n mcp-simple-tool = \"mcp_simple_tool.server:main\"\n"
+                },
+                {
+                    "date": 1741523876756,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -27,9 +27,10 @@\n     \"pdf2image>=1.16.0\",\n     \"Pillow>=9.0.0\",\n     \"pymupdf4llm==0.0.17\",\n     \"PyMuPDF>=1.22.0\",\n-    \"python-docx>=0.8.11\"\n+    \"python-docx>=0.8.11\",\n+    \"requests>=2.28.0\"\n ]\n \n [project.scripts]\n mcp-simple-tool = \"mcp_simple_tool.server:main\"\n"
+                },
+                {
+                    "date": 1741529379889,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -27,10 +27,9 @@\n     \"pdf2image>=1.16.0\",\n     \"Pillow>=9.0.0\",\n     \"pymupdf4llm==0.0.17\",\n     \"PyMuPDF>=1.22.0\",\n-    \"python-docx>=0.8.11\",\n-    \"requests>=2.28.0\"\n+    \"python-docx>=0.8.11\"\n ]\n \n [project.scripts]\n mcp-simple-tool = \"mcp_simple_tool.server:main\"\n"
+                }
+            ],
+            "date": 1741245105746,
+            "name": "Commit-0",
+            "content": "[project]\nname = \"mcp-simple-tool\"\nversion = \"0.1.0\"\ndescription = \"A simple MCP server exposing a website fetching tool\"\nreadme = \"README.md\"\nrequires-python = \">=3.10\"\nauthors = [{ name = \"Anthropic, PBC.\" }]\nmaintainers = [\n    { name = \"David Soria Parra\", email = \"davidsp@anthropic.com\" },\n    { name = \"Justin Spahr-Summers\", email = \"justin@anthropic.com\" },\n]\nkeywords = [\"mcp\", \"llm\", \"automation\", \"web\", \"fetch\"]\nlicense = { text = \"MIT\" }\nclassifiers = [\n    \"Development Status :: 4 - Beta\",\n    \"Intended Audience :: Developers\",\n    \"License :: OSI Approved :: MIT License\",\n    \"Programming Language :: Python :: 3\",\n    \"Programming Language :: Python :: 3.10\",\n]\ndependencies = [\n    \"anyio>=4.5\", \n    \"click>=8.1.0\", \n    \"httpx>=0.27\", \n    \"mcp\",\n    \"PyPDF2>=3.0.0\",\n    \"pdf2image>=1.16.0\",\n    \"Pillow>=9.0.0\"\n]\n\n[project.scripts]\nmcp-simple-tool = \"mcp_simple_tool.server:main\"\n\n[project.optional-dependencies]\ndev = [\"pyright>=1.1.378\", \"pytest>=8.3.3\", \"ruff>=0.6.9\", \"pytest-asyncio>=0.23.5\"]\n\n[build-system]\nrequires = [\"hatchling\"]\nbuild-backend = \"hatchling.build\"\n\n[tool.hatch.build.targets.wheel]\npackages = [\"mcp_simple_tool\"]\n\n[tool.pyright]\ninclude = [\"mcp_simple_tool\"]\nvenvPath = \".\"\nvenv = \".venv\"\n\n[tool.ruff.lint]\nselect = [\"E\", \"F\", \"I\"]\nignore = []\n\n[tool.ruff]\nline-length = 88\ntarget-version = \"py310\"\n\n[tool.uv]\ndev-dependencies = [\"pyright>=1.1.378\", \"pytest>=8.3.3\", \"ruff>=0.6.9\", \"pytest-asyncio>=0.23.5\"]\n"
+        }
+    ]
+}

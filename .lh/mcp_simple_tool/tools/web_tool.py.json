@@ -1,0 +1,18 @@
+{
+    "sourceFile": "mcp_simple_tool/tools/web_tool.py",
+    "activeCommit": 0,
+    "commits": [
+        {
+            "activePatchIndex": 0,
+            "patches": [
+                {
+                    "date": 1741332226149,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n"
+                }
+            ],
+            "date": 1741332226149,
+            "name": "Commit-0",
+            "content": "\"\"\"\n网页内容获取工具\n\"\"\"\n\nimport httpx\nfrom typing import Dict, List, Any\nimport mcp.types as types\nfrom .base import BaseTool\n\n\nclass WebTool(BaseTool):\n    \"\"\"\n    用于获取网页内容的工具\n    \"\"\"\n    \n    @property\n    def name(self) -> str:\n        return \"url\"\n    \n    @property\n    def description(self) -> str:\n        return \"获取指定URL的网页内容\"\n    \n    @property\n    def input_schema(self) -> Dict[str, Any]:\n        return {\n            \"type\": \"object\",\n            \"required\": [\"url\"],\n            \"properties\": {\n                \"url\": {\n                    \"type\": \"string\",\n                    \"description\": \"要获取内容的网站URL\",\n                }\n            },\n        }\n    \n    async def execute(self, arguments: Dict[str, Any]) -> List[types.TextContent | types.ImageContent | types.EmbeddedResource]:\n        \"\"\"\n        获取网页内容\n        \n        Args:\n            arguments: 参数字典，必须包含'url'键\n            \n        Returns:\n            网页内容列表\n        \"\"\"\n        if \"url\" not in arguments:\n            return [types.TextContent(\n                type=\"text\",\n                text=\"错误: 缺少必要参数 'url'\"\n            )]\n        \n        return await self._fetch_website(arguments[\"url\"])\n    \n    async def _fetch_website(self, url: str) -> List[types.TextContent | types.ImageContent | types.EmbeddedResource]:\n        \"\"\"\n        获取指定URL的网页内容\n        \n        Args:\n            url: 要获取内容的网站URL\n            \n        Returns:\n            网页内容列表\n        \"\"\"\n        headers = {\n            \"User-Agent\": \"MCP Development Framework (github.com/modelcontextprotocol/python-sdk)\"\n        }\n        \n        try:\n            timeout = httpx.Timeout(10.0, connect=5.0)\n            async with httpx.AsyncClient(\n                follow_redirects=True, \n                headers=headers,\n                timeout=timeout\n            ) as client:\n                response = await client.get(url)\n                response.raise_for_status()\n                return [types.TextContent(type=\"text\", text=response.text)]\n        except httpx.TimeoutException:\n            return [types.TextContent(\n                type=\"text\",\n                text=\"错误: 请求超时，无法获取网站内容。\"\n            )]\n        except httpx.HTTPStatusError as e:\n            return [types.TextContent(\n                type=\"text\",\n                text=f\"错误: HTTP {e.response.status_code} 错误，无法获取网站内容。\"\n            )]\n        except Exception as e:\n            return [types.TextContent(\n                type=\"text\",\n                text=f\"错误: 获取网站内容失败: {str(e)}\"\n            )] "
+        }
+    ]
+}

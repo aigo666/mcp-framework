@@ -1,0 +1,22 @@
+{
+    "sourceFile": "mcp_simple_tool/__main__.py",
+    "activeCommit": 0,
+    "commits": [
+        {
+            "activePatchIndex": 1,
+            "patches": [
+                {
+                    "date": 1741332487497,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n"
+                },
+                {
+                    "date": 1741332594194,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -1,8 +1,5 @@\n-\"\"\"\n-主入口文件\n-\"\"\"\n+import sys\n \n-from mcp_simple_tool.server import main\n+from .server import main\n \n-if __name__ == \"__main__\":\n-    main()\n+sys.exit(main())\n"
+                }
+            ],
+            "date": 1741332487497,
+            "name": "Commit-0",
+            "content": "\"\"\"\n主入口文件\n\"\"\"\n\nfrom mcp_simple_tool.server import main\n\nif __name__ == \"__main__\":\n    main()\n"
+        }
+    ]
+}

@@ -1,0 +1,18 @@
+{
+    "sourceFile": "mcp_tool/tools/loader.py",
+    "activeCommit": 0,
+    "commits": [
+        {
+            "activePatchIndex": 0,
+            "patches": [
+                {
+                    "date": 1741345451458,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n"
+                }
+            ],
+            "date": 1741345451458,
+            "name": "Commit-0",
+            "content": "\"\"\"\n工具加载器模块，用于自动加载所有已注册的工具\n\"\"\"\nimport importlib\nimport pkgutil\nimport inspect\nimport os\nimport sys\nfrom typing import List, Type\nfrom . import BaseTool, ToolRegistry\n\ndef load_tools() -> List[Type[BaseTool]]:\n    \"\"\"\n    自动加载tools目录下的所有工具模块\n    \n    Returns:\n        List[Type[BaseTool]]: 已加载的工具类列表\n    \"\"\"\n    # 获取当前模块的路径\n    package_path = os.path.dirname(__file__)\n    \n    # 获取所有子模块\n    tool_modules = []\n    for _, name, is_pkg in pkgutil.iter_modules([package_path]):\n        # 跳过__init__.py和loader.py\n        if name in ['__init__', 'loader']:\n            continue\n        \n        # 导入模块\n        module_name = f\"{__package__}.{name}\"\n        try:\n            module = importlib.import_module(module_name)\n            tool_modules.append(module)\n        except ImportError as e:\n            print(f\"Warning: Failed to import module {module_name}: {e}\")\n    \n    # 收集所有已注册的工具类\n    tools = list(ToolRegistry._tools.values())\n    \n    # 返回工具类列表\n    return tools\n\ndef get_tool_instances() -> dict:\n    \"\"\"\n    创建所有工具类的实例\n    \n    Returns:\n        dict: 工具名称到工具实例的映射\n    \"\"\"\n    tools = load_tools()\n    tool_instances = {}\n    \n    for tool_class in tools:\n        try:\n            tool_instance = tool_class()\n            tool_instances[tool_class.name] = tool_instance\n        except Exception as e:\n            print(f\"Warning: Failed to instantiate tool {tool_class.name}: {e}\")\n    \n    return tool_instances "
+        }
+    ]
+}

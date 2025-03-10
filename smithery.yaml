@@ -1,0 +1,28 @@
+# Smithery configuration file: https://smithery.ai/docs/config#smitheryyaml
+
+startCommand:
+  type: stdio
+  configSchema:
+    # JSON Schema defining the configuration options for the MCP.
+    type: object
+    required: []
+    properties:
+      mcpServerPort:
+        type: number
+        default: 8000
+        description: Port to run the MCP server on.
+      mcpServerHost:
+        type: string
+        default: 0.0.0.0
+        description: Host to bind the MCP server to.
+      debug:
+        type: boolean
+        default: false
+        description: Enable debug mode.
+      mcpUserAgent:
+        type: string
+        description: Custom User-Agent for website fetching.
+  commandFunction:
+    # A function that produces the CLI command to start the MCP on stdio.
+    |-
+    (config) => ({ command: 'mcp-simple-tool', args: ['--transport', 'sse', '--port', String(config.mcpServerPort)], env: { MCP_SERVER_HOST: config.mcpServerHost, DEBUG: config.debug ? 'true' : 'false', MCP_USER_AGENT: config.mcpUserAgent || '' } })

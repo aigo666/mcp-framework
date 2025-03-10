@@ -1,0 +1,18 @@
+{
+    "sourceFile": "mcp_tool/tools/__init__.py",
+    "activeCommit": 0,
+    "commits": [
+        {
+            "activePatchIndex": 0,
+            "patches": [
+                {
+                    "date": 1741576383120,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n"
+                }
+            ],
+            "date": 1741576383120,
+            "name": "Commit-0",
+            "content": "from typing import Dict, Type, List\nimport mcp.types as types\n\n# 工具基类\nclass BaseTool:\n    \"\"\"所有工具的基类\"\"\"\n    name: str = \"\"\n    description: str = \"\"\n    input_schema: dict = {}\n    \n    @classmethod\n    def get_tool_definition(cls) -> types.Tool:\n        \"\"\"获取工具定义\"\"\"\n        return types.Tool(\n            name=cls.name,\n            description=cls.description,\n            inputSchema=cls.input_schema\n        )\n    \n    async def execute(self, arguments: dict) -> list[types.TextContent | types.ImageContent | types.EmbeddedResource]:\n        \"\"\"执行工具逻辑，需要在子类中实现\"\"\"\n        raise NotImplementedError(\"Tool implementation must override execute method\")\n\n\n# 工具注册器\nclass ToolRegistry:\n    \"\"\"工具注册器，用于管理所有可用工具\"\"\"\n    _tools: Dict[str, Type[BaseTool]] = {}\n    \n    @classmethod\n    def register(cls, tool_class: Type[BaseTool]) -> Type[BaseTool]:\n        \"\"\"注册工具\"\"\"\n        cls._tools[tool_class.name] = tool_class\n        return tool_class\n    \n    @classmethod\n    def get_tool(cls, name: str) -> Type[BaseTool]:\n        \"\"\"获取工具类\"\"\"\n        if name not in cls._tools:\n            raise ValueError(f\"Unknown tool: {name}\")\n        return cls._tools[name]\n    \n    @classmethod\n    def list_tools(cls) -> List[types.Tool]:\n        \"\"\"列出所有可用工具\"\"\"\n        return [tool_class.get_tool_definition() for tool_class in cls._tools.values()]\n    \n    @classmethod\n    def has_tool(cls, name: str) -> bool:\n        \"\"\"检查工具是否存在\"\"\"\n        return name in cls._tools "
+        }
+    ]
+}

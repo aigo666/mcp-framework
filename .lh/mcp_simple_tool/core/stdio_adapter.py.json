@@ -1,0 +1,18 @@
+{
+    "sourceFile": "mcp_simple_tool/core/stdio_adapter.py",
+    "activeCommit": 0,
+    "commits": [
+        {
+            "activePatchIndex": 0,
+            "patches": [
+                {
+                    "date": 1741332369492,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n"
+                }
+            ],
+            "date": 1741332369492,
+            "name": "Commit-0",
+            "content": "\"\"\"\nSTDIO适配器，用于处理MCP与STDIO的交互\n\"\"\"\n\nimport anyio\nfrom mcp.server.lowlevel import Server\nfrom mcp.server.stdio import stdio_server\nfrom typing import List, Dict, Any\nimport mcp.types as types\nfrom ..tools import BaseTool\n\n\nclass StdioAdapter:\n    \"\"\"\n    STDIO适配器，用于处理MCP与STDIO的交互\n    \"\"\"\n    \n    def __init__(self, app_name: str, tools: List[BaseTool]):\n        \"\"\"\n        初始化STDIO适配器\n        \n        Args:\n            app_name: 应用名称\n            tools: 工具列表\n        \"\"\"\n        self.app_name = app_name\n        self.tools = tools\n        self.app = Server(app_name)\n        \n    def setup(self):\n        \"\"\"\n        设置MCP服务器\n        \"\"\"\n        # 注册工具调用函数\n        @self.app.call_tool()\n        async def fetch_tool(name: str, arguments: dict) -> List[types.TextContent | types.ImageContent | types.EmbeddedResource]:\n            \"\"\"\n            工具调用函数\n            \n            Args:\n                name: 工具名称\n                arguments: 工具参数\n                \n            Returns:\n                工具执行结果\n            \"\"\"\n            # 查找匹配的工具\n            for tool in self.tools:\n                if tool.name == name:\n                    return await tool.execute(arguments)\n            \n            # 如果没有找到匹配的工具，返回错误信息\n            return [types.TextContent(\n                type=\"text\",\n                text=f\"错误: 未知工具: {name}\"\n            )]\n        \n        # 注册工具列表函数\n        @self.app.list_tools()\n        async def list_tools() -> List[types.Tool]:\n            \"\"\"\n            列出所有可用的工具\n            \n            Returns:\n                工具定义列表\n            \"\"\"\n            return [tool.to_tool_definition() for tool in self.tools]\n    \n    async def run_async(self):\n        \"\"\"\n        异步运行STDIO服务器\n        \"\"\"\n        # 设置MCP服务器\n        self.setup()\n        \n        # 运行服务器\n        async with stdio_server() as streams:\n            await self.app.run(\n                streams[0], streams[1], self.app.create_initialization_options()\n            )\n    \n    def run(self):\n        \"\"\"\n        运行STDIO服务器\n        \"\"\"\n        anyio.run(self.run_async) "
+        }
+    ]
+}

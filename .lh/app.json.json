@@ -1,0 +1,18 @@
+{
+    "sourceFile": "app.json",
+    "activeCommit": 0,
+    "commits": [
+        {
+            "activePatchIndex": 0,
+            "patches": [
+                {
+                    "date": 1741252783974,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n"
+                }
+            ],
+            "date": 1741252783974,
+            "name": "Commit-0",
+            "content": "{\n  \"name\": \"MCP Development Framework\",\n  \"description\": \"A powerful framework for creating custom tools that interact with large language models\",\n  \"repository\": \"https://github.com/your-username/mcp-development-framework\",\n  \"keywords\": [\"python\", \"mcp\", \"llm\", \"pdf\", \"tool\", \"framework\"],\n  \"env\": {\n    \"MCP_SERVER_PORT\": {\n      \"description\": \"Port to run the server on\",\n      \"value\": \"8000\",\n      \"required\": false\n    },\n    \"MCP_SERVER_HOST\": {\n      \"description\": \"Host to bind the server to\",\n      \"value\": \"0.0.0.0\",\n      \"required\": false\n    },\n    \"DEBUG\": {\n      \"description\": \"Enable debug mode\",\n      \"value\": \"false\",\n      \"required\": false\n    },\n    \"MCP_USER_AGENT\": {\n      \"description\": \"Custom User-Agent for website fetching\",\n      \"value\": \"MCP Development Framework (github.com/modelcontextprotocol/python-sdk)\",\n      \"required\": false\n    }\n  },\n  \"stack\": \"container\",\n  \"formation\": {\n    \"web\": {\n      \"quantity\": 1,\n      \"size\": \"eco\"\n    }\n  }\n} "
+        }
+    ]
+}

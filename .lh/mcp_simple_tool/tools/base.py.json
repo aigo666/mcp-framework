@@ -1,0 +1,22 @@
+{
+    "sourceFile": "mcp_simple_tool/tools/base.py",
+    "activeCommit": 0,
+    "commits": [
+        {
+            "activePatchIndex": 1,
+            "patches": [
+                {
+                    "date": 1741332169421,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n"
+                },
+                {
+                    "date": 1741332588115,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -1,57 +1,1 @@\n-\"\"\"\n-基础工具类，所有工具都应该继承这个类\n-\"\"\"\n-\n-import abc\n-from typing import Dict, List, Any, Optional\n-import mcp.types as types\n-\n-\n-class BaseTool(abc.ABC):\n-    \"\"\"\n-    所有MCP工具的基类，定义了工具的基本接口\n-    \"\"\"\n-    \n-    @property\n-    @abc.abstractmethod\n-    def name(self) -> str:\n-        \"\"\"工具名称\"\"\"\n-        pass\n-    \n-    @property\n-    @abc.abstractmethod\n-    def description(self) -> str:\n-        \"\"\"工具描述\"\"\"\n-        pass\n-    \n-    @property\n-    @abc.abstractmethod\n-    def input_schema(self) -> Dict[str, Any]:\n-        \"\"\"工具输入参数模式定义\"\"\"\n-        pass\n-    \n-    @abc.abstractmethod\n-    async def execute(self, arguments: Dict[str, Any]) -> List[types.TextContent | types.ImageContent | types.EmbeddedResource]:\n-        \"\"\"\n-        执行工具逻辑\n-        \n-        Args:\n-            arguments: 工具参数\n-            \n-        Returns:\n-            执行结果列表，可以包含文本、图像或其他类型的内容\n-        \"\"\"\n-        pass\n-    \n-    def to_tool_definition(self) -> types.Tool:\n-        \"\"\"\n-        转换为MCP工具定义\n-        \n-        Returns:\n-            MCP工具定义对象\n-        \"\"\"\n-        return types.Tool(\n-            name=self.name,\n-            description=self.description,\n-            inputSchema=self.input_schema\n-        ) \n\\ No newline at end of file\n+ \n\\ No newline at end of file\n"
+                }
+            ],
+            "date": 1741332169421,
+            "name": "Commit-0",
+            "content": "\"\"\"\n基础工具类，所有工具都应该继承这个类\n\"\"\"\n\nimport abc\nfrom typing import Dict, List, Any, Optional\nimport mcp.types as types\n\n\nclass BaseTool(abc.ABC):\n    \"\"\"\n    所有MCP工具的基类，定义了工具的基本接口\n    \"\"\"\n    \n    @property\n    @abc.abstractmethod\n    def name(self) -> str:\n        \"\"\"工具名称\"\"\"\n        pass\n    \n    @property\n    @abc.abstractmethod\n    def description(self) -> str:\n        \"\"\"工具描述\"\"\"\n        pass\n    \n    @property\n    @abc.abstractmethod\n    def input_schema(self) -> Dict[str, Any]:\n        \"\"\"工具输入参数模式定义\"\"\"\n        pass\n    \n    @abc.abstractmethod\n    async def execute(self, arguments: Dict[str, Any]) -> List[types.TextContent | types.ImageContent | types.EmbeddedResource]:\n        \"\"\"\n        执行工具逻辑\n        \n        Args:\n            arguments: 工具参数\n            \n        Returns:\n            执行结果列表，可以包含文本、图像或其他类型的内容\n        \"\"\"\n        pass\n    \n    def to_tool_definition(self) -> types.Tool:\n        \"\"\"\n        转换为MCP工具定义\n        \n        Returns:\n            MCP工具定义对象\n        \"\"\"\n        return types.Tool(\n            name=self.name,\n            description=self.description,\n            inputSchema=self.input_schema\n        ) "
+        }
+    ]
+}

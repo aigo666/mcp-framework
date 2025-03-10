@@ -1,0 +1,18 @@
+{
+    "sourceFile": "mcp_tool/tools/README.md",
+    "activeCommit": 0,
+    "commits": [
+        {
+            "activePatchIndex": 0,
+            "patches": [
+                {
+                    "date": 1741345406172,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n"
+                }
+            ],
+            "date": 1741345406172,
+            "name": "Commit-0",
+            "content": "# SEE工具框架\n\n这是一个用于SEE（Standard Extension Environment）对接的模块化工具框架。该框架允许开发者轻松创建和扩展自定义工具，并通过MCP协议与模型交互。\n\n## 框架结构\n\n```\nmcp_tool/\n├── tools/\n│   ├── __init__.py        # 定义工具基类和注册器\n│   ├── loader.py          # 工具加载器，自动加载所有工具\n│   ├── url_tool.py        # URL工具实现\n│   ├── pdf_tool.py        # PDF解析工具实现\n│   └── quick_pdf_tool.py  # 快速PDF预览工具实现\n├── __init__.py\n├── __main__.py\n└── server.py              # MCP服务器实现\n```\n\n## 如何开发新工具\n\n1. 在`tools`目录下创建一个新的Python文件，如`your_tool.py`\n2. 导入必要的依赖和基类\n3. 创建一个继承自`BaseTool`的工具类\n4. 使用`@ToolRegistry.register`装饰器注册工具\n5. 实现工具的`execute`方法\n\n### 工具模板示例\n\n```python\nimport mcp.types as types\nfrom . import BaseTool, ToolRegistry\n\n@ToolRegistry.register\nclass YourTool(BaseTool):\n    \"\"\"您的工具描述\"\"\"\n    name = \"your_tool_name\"  # 工具的唯一标识符\n    description = \"您的工具描述\"  # 工具的描述信息，将显示给用户\n    input_schema = {\n        \"type\": \"object\",\n        \"required\": [\"param1\"],  # 必需的参数\n        \"properties\": {\n            \"param1\": {\n                \"type\": \"string\",\n                \"description\": \"参数1的描述\",\n            },\n            \"param2\": {\n                \"type\": \"integer\",\n                \"description\": \"参数2的描述（可选）\",\n            }\n        },\n    }\n    \n    async def execute(self, arguments: dict) -> list[types.TextContent | types.ImageContent | types.EmbeddedResource]:\n        \"\"\"执行工具逻辑\"\"\"\n        # 参数验证\n        if \"param1\" not in arguments:\n            return [types.TextContent(\n                type=\"text\",\n                text=\"Error: Missing required argument 'param1'\"\n            )]\n            \n        # 获取参数\n        param1 = arguments[\"param1\"]\n        param2 = arguments.get(\"param2\", 0)  # 获取可选参数，提供默认值\n        \n        # 执行工具逻辑\n        result = f\"处理参数: {param1}, {param2}\"\n        \n        # 返回结果\n        return [types.TextContent(\n            type=\"text\",\n            text=result\n        )]\n```\n\n## 注意事项\n\n1. 每个工具必须有一个唯一的`name`\n2. 工具描述应该清晰地说明工具的用途和使用方法\n3. 输入模式应该准确描述所需的参数和类型\n4. 所有参数验证应在`execute`方法中处理\n5. 工具应返回适当的`TextContent`或`ImageContent`对象列表\n\n## 自动加载机制\n\n框架使用`loader.py`中的自动加载机制，在启动时自动发现和加载所有工具。您只需按照上述模板创建新工具，它将在下次启动服务器时自动注册。\n\n无需修改`server.py`或其他任何文件，框架会自动处理工具的注册和调用。\n\n## 扩展示例\n\n您可以参考现有的工具实现（`url_tool.py`, `pdf_tool.py`, `quick_pdf_tool.py`）作为开发新工具的参考。 "
+        }
+    ]
+}

@@ -1,0 +1,54 @@
+{
+    "sourceFile": "docker-compose.yml",
+    "activeCommit": 0,
+    "commits": [
+        {
+            "activePatchIndex": 9,
+            "patches": [
+                {
+                    "date": 1741245882812,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n"
+                },
+                {
+                    "date": 1741494815890,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -9,11 +9,16 @@\n       - MCP_SERVER_PORT=${MCP_SERVER_PORT:-8000}\n       - MCP_SERVER_HOST=${MCP_SERVER_HOST:-0.0.0.0}\n       - DEBUG=${DEBUG:-false}\n       - MCP_USER_AGENT=${MCP_USER_AGENT:-\"MCP Test Server (github.com/modelcontextprotocol/python-sdk)\"}\n+      - LLM_API_KEY=${LLM_API_KEY:-\"\"}\n+      - LLM_API_BASE_URL=${LLM_API_BASE_URL:-\"api.openai.com\"}\n+      - LLM_MODEL=${LLM_MODEL:-\"gpt-4o\"}\n     volumes:\n       # 挂载用户的本地目录到容器内的/host_files目录\n       - /Users/liuyanzhi/Desktop:/host_files\n+      # 挂载图片保存目录\n+      - /Users/liuyanzhi/Desktop/pdf_images:/host_images\n     restart: unless-stopped\n     healthcheck:\n       test: [\"CMD\", \"curl\", \"-f\", \"http://localhost:8000/sse\"]\n       interval: 30s\n"
+                },
+                {
+                    "date": 1741495204623,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -9,16 +9,11 @@\n       - MCP_SERVER_PORT=${MCP_SERVER_PORT:-8000}\n       - MCP_SERVER_HOST=${MCP_SERVER_HOST:-0.0.0.0}\n       - DEBUG=${DEBUG:-false}\n       - MCP_USER_AGENT=${MCP_USER_AGENT:-\"MCP Test Server (github.com/modelcontextprotocol/python-sdk)\"}\n-      - LLM_API_KEY=${LLM_API_KEY:-\"\"}\n-      - LLM_API_BASE_URL=${LLM_API_BASE_URL:-\"api.openai.com\"}\n-      - LLM_MODEL=${LLM_MODEL:-\"gpt-4o\"}\n     volumes:\n       # 挂载用户的本地目录到容器内的/host_files目录\n       - /Users/liuyanzhi/Desktop:/host_files\n-      # 挂载图片保存目录\n-      - /Users/liuyanzhi/Desktop/pdf_images:/host_images\n     restart: unless-stopped\n     healthcheck:\n       test: [\"CMD\", \"curl\", \"-f\", \"http://localhost:8000/sse\"]\n       interval: 30s\n"
+                },
+                {
+                    "date": 1741521124496,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -9,11 +9,20 @@\n       - MCP_SERVER_PORT=${MCP_SERVER_PORT:-8000}\n       - MCP_SERVER_HOST=${MCP_SERVER_HOST:-0.0.0.0}\n       - DEBUG=${DEBUG:-false}\n       - MCP_USER_AGENT=${MCP_USER_AGENT:-\"MCP Test Server (github.com/modelcontextprotocol/python-sdk)\"}\n+      # 图像识别相关环境变量\n+      - LLM_API_BASE_URL=${LLM_API_BASE_URL:-api.openai.com}\n+      - LLM_API_KEY=${LLM_API_KEY:-}\n+      - LLM_MODEL=${LLM_MODEL:-gpt-4o}\n+      - LLM_MAX_TOKENS=${LLM_MAX_TOKENS:-400}\n+      - ENABLE_IMAGE_RECOGNITION=${ENABLE_IMAGE_RECOGNITION:-true}\n+      - IMAGE_SAVE_DIR=/img\n     volumes:\n       # 挂载用户的本地目录到容器内的/host_files目录\n       - /Users/liuyanzhi/Desktop:/host_files\n+      # 挂载图像目录\n+      - /Users/liuyanzhi/Desktop/img:/img\n     restart: unless-stopped\n     healthcheck:\n       test: [\"CMD\", \"curl\", \"-f\", \"http://localhost:8000/sse\"]\n       interval: 30s\n"
+                },
+                {
+                    "date": 1741521262981,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -15,14 +15,14 @@\n       - LLM_API_KEY=${LLM_API_KEY:-}\n       - LLM_MODEL=${LLM_MODEL:-gpt-4o}\n       - LLM_MAX_TOKENS=${LLM_MAX_TOKENS:-400}\n       - ENABLE_IMAGE_RECOGNITION=${ENABLE_IMAGE_RECOGNITION:-true}\n-      - IMAGE_SAVE_DIR=/img\n+      - IMAGE_SAVE_DIR=/host_images\n     volumes:\n       # 挂载用户的本地目录到容器内的/host_files目录\n       - /Users/liuyanzhi/Desktop:/host_files\n-      # 挂载图像目录\n-      - /Users/liuyanzhi/Desktop/img:/img\n+      # 挂载图像目录，与GLM-Free-API保持一致\n+      - /Users/liuyanzhi/Desktop/img:/host_images\n     restart: unless-stopped\n     healthcheck:\n       test: [\"CMD\", \"curl\", \"-f\", \"http://localhost:8000/sse\"]\n       interval: 30s\n"
+                },
+                {
+                    "date": 1741521346043,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -16,8 +16,9 @@\n       - LLM_MODEL=${LLM_MODEL:-gpt-4o}\n       - LLM_MAX_TOKENS=${LLM_MAX_TOKENS:-400}\n       - ENABLE_IMAGE_RECOGNITION=${ENABLE_IMAGE_RECOGNITION:-true}\n       - IMAGE_SAVE_DIR=/host_images\n+      - API_IMAGE_PATH=${API_IMAGE_PATH:-/host_images}\n     volumes:\n       # 挂载用户的本地目录到容器内的/host_files目录\n       - /Users/liuyanzhi/Desktop:/host_files\n       # 挂载图像目录，与GLM-Free-API保持一致\n"
+                },
+                {
+                    "date": 1741523195581,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -9,21 +9,11 @@\n       - MCP_SERVER_PORT=${MCP_SERVER_PORT:-8000}\n       - MCP_SERVER_HOST=${MCP_SERVER_HOST:-0.0.0.0}\n       - DEBUG=${DEBUG:-false}\n       - MCP_USER_AGENT=${MCP_USER_AGENT:-\"MCP Test Server (github.com/modelcontextprotocol/python-sdk)\"}\n-      # 图像识别相关环境变量\n-      - LLM_API_BASE_URL=${LLM_API_BASE_URL:-api.openai.com}\n-      - LLM_API_KEY=${LLM_API_KEY:-}\n-      - LLM_MODEL=${LLM_MODEL:-gpt-4o}\n-      - LLM_MAX_TOKENS=${LLM_MAX_TOKENS:-400}\n-      - ENABLE_IMAGE_RECOGNITION=${ENABLE_IMAGE_RECOGNITION:-true}\n-      - IMAGE_SAVE_DIR=/host_images\n-      - API_IMAGE_PATH=${API_IMAGE_PATH:-/host_images}\n     volumes:\n       # 挂载用户的本地目录到容器内的/host_files目录\n       - /Users/liuyanzhi/Desktop:/host_files\n-      # 挂载图像目录，与GLM-Free-API保持一致\n-      - /Users/liuyanzhi/Desktop/img:/host_images\n     restart: unless-stopped\n     healthcheck:\n       test: [\"CMD\", \"curl\", \"-f\", \"http://localhost:8000/sse\"]\n       interval: 30s\n"
+                },
+                {
+                    "date": 1741527142405,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -12,8 +12,10 @@\n       - MCP_USER_AGENT=${MCP_USER_AGENT:-\"MCP Test Server (github.com/modelcontextprotocol/python-sdk)\"}\n     volumes:\n       # 挂载用户的本地目录到容器内的/host_files目录\n       - /Users/liuyanzhi/Desktop:/host_files\n+    extra_hosts:\n+      - \"host.docker.internal:host-gateway\"\n     restart: unless-stopped\n     healthcheck:\n       test: [\"CMD\", \"curl\", \"-f\", \"http://localhost:8000/sse\"]\n       interval: 30s\n"
+                },
+                {
+                    "date": 1741527149227,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -20,5 +20,5 @@\n       test: [\"CMD\", \"curl\", \"-f\", \"http://localhost:8000/sse\"]\n       interval: 30s\n       timeout: 10s\n       retries: 3\n-      start_period: 10s \n\\ No newline at end of file\n+      start_period: 10s\n\\ No newline at end of file\n"
+                },
+                {
+                    "date": 1741529381888,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -12,13 +12,11 @@\n       - MCP_USER_AGENT=${MCP_USER_AGENT:-\"MCP Test Server (github.com/modelcontextprotocol/python-sdk)\"}\n     volumes:\n       # 挂载用户的本地目录到容器内的/host_files目录\n       - /Users/liuyanzhi/Desktop:/host_files\n-    extra_hosts:\n-      - \"host.docker.internal:host-gateway\"\n     restart: unless-stopped\n     healthcheck:\n       test: [\"CMD\", \"curl\", \"-f\", \"http://localhost:8000/sse\"]\n       interval: 30s\n       timeout: 10s\n       retries: 3\n-      start_period: 10s\n\\ No newline at end of file\n+      start_period: 10s \n\\ No newline at end of file\n"
+                }
+            ],
+            "date": 1741245882812,
+            "name": "Commit-0",
+            "content": "version: '3.8'\n\nservices:\n  mcp-server:\n    build: .\n    ports:\n      - \"${MCP_SERVER_PORT:-8000}:8000\"\n    environment:\n      - MCP_SERVER_PORT=${MCP_SERVER_PORT:-8000}\n      - MCP_SERVER_HOST=${MCP_SERVER_HOST:-0.0.0.0}\n      - DEBUG=${DEBUG:-false}\n      - MCP_USER_AGENT=${MCP_USER_AGENT:-\"MCP Test Server (github.com/modelcontextprotocol/python-sdk)\"}\n    volumes:\n      # 挂载用户的本地目录到容器内的/host_files目录\n      - /Users/liuyanzhi/Desktop:/host_files\n    restart: unless-stopped\n    healthcheck:\n      test: [\"CMD\", \"curl\", \"-f\", \"http://localhost:8000/sse\"]\n      interval: 30s\n      timeout: 10s\n      retries: 3\n      start_period: 10s "
+        }
+    ]
+}

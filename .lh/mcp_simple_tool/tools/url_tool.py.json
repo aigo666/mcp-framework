@@ -1,0 +1,18 @@
+{
+    "sourceFile": "mcp_simple_tool/tools/url_tool.py",
+    "activeCommit": 0,
+    "commits": [
+        {
+            "activePatchIndex": 0,
+            "patches": [
+                {
+                    "date": 1741333258090,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n"
+                }
+            ],
+            "date": 1741333258090,
+            "name": "Commit-0",
+            "content": "import httpx\nimport mcp.types as types\nfrom . import BaseTool, ToolRegistry\n\n@ToolRegistry.register\nclass UrlTool(BaseTool):\n    \"\"\"URL获取工具，用于获取网站内容\"\"\"\n    name = \"url\"\n    description = \"Fetches a website and returns its content\"\n    input_schema = {\n        \"type\": \"object\",\n        \"required\": [\"url\"],\n        \"properties\": {\n            \"url\": {\n                \"type\": \"string\",\n                \"description\": \"URL to fetch\",\n            }\n        },\n    }\n    \n    async def execute(self, arguments: dict) -> list[types.TextContent | types.ImageContent | types.EmbeddedResource]:\n        \"\"\"获取网站内容\"\"\"\n        if \"url\" not in arguments:\n            return [types.TextContent(\n                type=\"text\",\n                text=\"Error: Missing required argument 'url'\"\n            )]\n            \n        url = arguments[\"url\"]\n        headers = {\n            \"User-Agent\": \"MCP Test Server (github.com/modelcontextprotocol/python-sdk)\"\n        }\n        try:\n            timeout = httpx.Timeout(10.0, connect=5.0)\n            async with httpx.AsyncClient(\n                follow_redirects=True, \n                headers=headers,\n                timeout=timeout\n            ) as client:\n                response = await client.get(url)\n                response.raise_for_status()\n                return [types.TextContent(type=\"text\", text=response.text)]\n        except httpx.TimeoutException:\n            return [types.TextContent(\n                type=\"text\",\n                text=\"Error: Request timed out while trying to fetch the website.\"\n            )]\n        except httpx.HTTPStatusError as e:\n            return [types.TextContent(\n                type=\"text\",\n                text=(f\"Error: HTTP {e.response.status_code} \"\n                      \"error while fetching the website.\")\n            )]\n        except Exception as e:\n            return [types.TextContent(\n                type=\"text\",\n                text=f\"Error: Failed to fetch website: {str(e)}\"\n            )] "
+        }
+    ]
+}
