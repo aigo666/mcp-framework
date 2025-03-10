@@ -1,5 +1,5 @@
 # MCP开发框架
-
+[![smithery badge](https://smithery.ai/badge/@aigo666/mcp-framework)](https://smithery.ai/server/@aigo666/mcp-framework)
 一个强大的MCP（Model Context Protocol）开发框架，用于创建与大语言模型交互的自定义工具。该框架提供了一套完整的工具集，可以轻松地扩展Cursor IDE的功能，实现网页内容获取、PDF文档处理和Word文档解析等高级功能。
 
 ## 主要功能
