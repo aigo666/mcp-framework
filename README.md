@@ -289,3 +289,7 @@ uv run pytest -v
 
 本项目采用MIT许可证 - 详情请参阅[LICENSE](LICENSE)文件。
 
+## 加入MCP开发交流群，扫码添加微信进群
+<img width="234" alt="image" src="https://github.com/user-attachments/assets/7a3f1275-be5a-4620-8566-4de194c9c41a" />
+
+
