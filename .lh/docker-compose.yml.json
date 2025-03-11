@@ -3,7 +3,7 @@
     "activeCommit": 0,
     "commits": [
         {
-            "activePatchIndex": 9,
+            "activePatchIndex": 23,
             "patches": [
                 {
                     "date": 1741245882812,
@@ -44,6 +44,62 @@
                 {
                     "date": 1741529381888,
                     "content": "Index: \n===================================================================\n--- \n+++ \n@@ -12,13 +12,11 @@\n       - MCP_USER_AGENT=${MCP_USER_AGENT:-\"MCP Test Server (github.com/modelcontextprotocol/python-sdk)\"}\n     volumes:\n       # 挂载用户的本地目录到容器内的/host_files目录\n       - /Users/liuyanzhi/Desktop:/host_files\n-    extra_hosts:\n-      - \"host.docker.internal:host-gateway\"\n     restart: unless-stopped\n     healthcheck:\n       test: [\"CMD\", \"curl\", \"-f\", \"http://localhost:8000/sse\"]\n       interval: 30s\n       timeout: 10s\n       retries: 3\n-      start_period: 10s\n\\ No newline at end of file\n+      start_period: 10s \n\\ No newline at end of file\n"
+                },
+                {
+                    "date": 1741606181060,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -12,8 +12,11 @@\n       - MCP_USER_AGENT=${MCP_USER_AGENT:-\"MCP Test Server (github.com/modelcontextprotocol/python-sdk)\"}\n     volumes:\n       # 挂载用户的本地目录到容器内的/host_files目录\n       - /Users/liuyanzhi/Desktop:/host_files\n+    extra_hosts:\n+      - \"host.docker.internal:host-gateway\"\n+      - \"d.shuqudata.com:host-gateway\"\n     restart: unless-stopped\n     healthcheck:\n       test: [\"CMD\", \"curl\", \"-f\", \"http://localhost:8000/sse\"]\n       interval: 30s\n"
+                },
+                {
+                    "date": 1741606242593,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -13,10 +13,9 @@\n     volumes:\n       # 挂载用户的本地目录到容器内的/host_files目录\n       - /Users/liuyanzhi/Desktop:/host_files\n     extra_hosts:\n-      - \"host.docker.internal:host-gateway\"\n-      - \"d.shuqudata.com:host-gateway\"\n+      - \"d.shuqudata.com:172.18.31.70\"\n     restart: unless-stopped\n     healthcheck:\n       test: [\"CMD\", \"curl\", \"-f\", \"http://localhost:8000/sse\"]\n       interval: 30s\n"
+                },
+                {
+                    "date": 1741606315725,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -2,8 +2,9 @@\n \n services:\n   mcp-server:\n     build: .\n+    network_mode: \"host\"\n     ports:\n       - \"${MCP_SERVER_PORT:-8000}:8000\"\n     environment:\n       - MCP_SERVER_PORT=${MCP_SERVER_PORT:-8000}\n"
+                },
+                {
+                    "date": 1741606328964,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -3,10 +3,8 @@\n services:\n   mcp-server:\n     build: .\n     network_mode: \"host\"\n-    ports:\n-      - \"${MCP_SERVER_PORT:-8000}:8000\"\n     environment:\n       - MCP_SERVER_PORT=${MCP_SERVER_PORT:-8000}\n       - MCP_SERVER_HOST=${MCP_SERVER_HOST:-0.0.0.0}\n       - DEBUG=${DEBUG:-false}\n"
+                },
+                {
+                    "date": 1741606336891,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -2,9 +2,10 @@\n \n services:\n   mcp-server:\n     build: .\n-    network_mode: \"host\"\n+    ports:\n+      - \"${MCP_SERVER_PORT:-8000}:8000\"\n     environment:\n       - MCP_SERVER_PORT=${MCP_SERVER_PORT:-8000}\n       - MCP_SERVER_HOST=${MCP_SERVER_HOST:-0.0.0.0}\n       - DEBUG=${DEBUG:-false}\n"
+                },
+                {
+                    "date": 1741606387301,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -2,20 +2,17 @@\n \n services:\n   mcp-server:\n     build: .\n-    ports:\n-      - \"${MCP_SERVER_PORT:-8000}:8000\"\n+    network_mode: \"host\"\n     environment:\n       - MCP_SERVER_PORT=${MCP_SERVER_PORT:-8000}\n       - MCP_SERVER_HOST=${MCP_SERVER_HOST:-0.0.0.0}\n       - DEBUG=${DEBUG:-false}\n       - MCP_USER_AGENT=${MCP_USER_AGENT:-\"MCP Test Server (github.com/modelcontextprotocol/python-sdk)\"}\n     volumes:\n       # 挂载用户的本地目录到容器内的/host_files目录\n       - /Users/liuyanzhi/Desktop:/host_files\n-    extra_hosts:\n-      - \"d.shuqudata.com:172.18.31.70\"\n     restart: unless-stopped\n     healthcheck:\n       test: [\"CMD\", \"curl\", \"-f\", \"http://localhost:8000/sse\"]\n       interval: 30s\n"
+                },
+                {
+                    "date": 1741606430142,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -2,17 +2,22 @@\n \n services:\n   mcp-server:\n     build: .\n+    # 使用host网络模式，直接使用宿主机网络\n     network_mode: \"host\"\n+    # ports:\n+    #   - \"${MCP_SERVER_PORT:-8000}:8000\"\n     environment:\n       - MCP_SERVER_PORT=${MCP_SERVER_PORT:-8000}\n       - MCP_SERVER_HOST=${MCP_SERVER_HOST:-0.0.0.0}\n       - DEBUG=${DEBUG:-false}\n       - MCP_USER_AGENT=${MCP_USER_AGENT:-\"MCP Test Server (github.com/modelcontextprotocol/python-sdk)\"}\n     volumes:\n       # 挂载用户的本地目录到容器内的/host_files目录\n       - /Users/liuyanzhi/Desktop:/host_files\n+    # extra_hosts:\n+    #   - \"d.shuqudata.com:172.18.31.70\"\n     restart: unless-stopped\n     healthcheck:\n       test: [\"CMD\", \"curl\", \"-f\", \"http://localhost:8000/sse\"]\n       interval: 30s\n"
+                },
+                {
+                    "date": 1741606440645,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -14,10 +14,8 @@\n       - MCP_USER_AGENT=${MCP_USER_AGENT:-\"MCP Test Server (github.com/modelcontextprotocol/python-sdk)\"}\n     volumes:\n       # 挂载用户的本地目录到容器内的/host_files目录\n       - /Users/liuyanzhi/Desktop:/host_files\n-    # extra_hosts:\n-    #   - \"d.shuqudata.com:172.18.31.70\"\n     restart: unless-stopped\n     healthcheck:\n       test: [\"CMD\", \"curl\", \"-f\", \"http://localhost:8000/sse\"]\n       interval: 30s\n"
+                },
+                {
+                    "date": 1741606523544,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -2,12 +2,9 @@\n \n services:\n   mcp-server:\n     build: .\n-    # 使用host网络模式，直接使用宿主机网络\n     network_mode: \"host\"\n-    # ports:\n-    #   - \"${MCP_SERVER_PORT:-8000}:8000\"\n     environment:\n       - MCP_SERVER_PORT=${MCP_SERVER_PORT:-8000}\n       - MCP_SERVER_HOST=${MCP_SERVER_HOST:-0.0.0.0}\n       - DEBUG=${DEBUG:-false}\n"
+                },
+                {
+                    "date": 1741606529158,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -2,9 +2,10 @@\n \n services:\n   mcp-server:\n     build: .\n-    network_mode: \"host\"\n+    ports:\n+      - \"${MCP_SERVER_PORT:-8000}:8000\"\n     environment:\n       - MCP_SERVER_PORT=${MCP_SERVER_PORT:-8000}\n       - MCP_SERVER_HOST=${MCP_SERVER_HOST:-0.0.0.0}\n       - DEBUG=${DEBUG:-false}\n"
+                },
+                {
+                    "date": 1741606538827,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -12,8 +12,10 @@\n       - MCP_USER_AGENT=${MCP_USER_AGENT:-\"MCP Test Server (github.com/modelcontextprotocol/python-sdk)\"}\n     volumes:\n       # 挂载用户的本地目录到容器内的/host_files目录\n       - /Users/liuyanzhi/Desktop:/host_files\n+    extra_hosts:\n+      - \"d.shuqudata.com:172.18.31.70\"\n     restart: unless-stopped\n     healthcheck:\n       test: [\"CMD\", \"curl\", \"-f\", \"http://localhost:8000/sse\"]\n       interval: 30s\n"
+                },
+                {
+                    "date": 1741606545658,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -12,10 +12,8 @@\n       - MCP_USER_AGENT=${MCP_USER_AGENT:-\"MCP Test Server (github.com/modelcontextprotocol/python-sdk)\"}\n     volumes:\n       # 挂载用户的本地目录到容器内的/host_files目录\n       - /Users/liuyanzhi/Desktop:/host_files\n-    extra_hosts:\n-      - \"d.shuqudata.com:172.18.31.70\"\n     restart: unless-stopped\n     healthcheck:\n       test: [\"CMD\", \"curl\", \"-f\", \"http://localhost:8000/sse\"]\n       interval: 30s\n"
+                },
+                {
+                    "date": 1741606587125,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -2,8 +2,9 @@\n \n services:\n   mcp-server:\n     build: .\n+    network_mode: host\n     ports:\n       - \"${MCP_SERVER_PORT:-8000}:8000\"\n     environment:\n       - MCP_SERVER_PORT=${MCP_SERVER_PORT:-8000}\n"
+                },
+                {
+                    "date": 1741606631529,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -2,9 +2,8 @@\n \n services:\n   mcp-server:\n     build: .\n-    network_mode: host\n     ports:\n       - \"${MCP_SERVER_PORT:-8000}:8000\"\n     environment:\n       - MCP_SERVER_PORT=${MCP_SERVER_PORT:-8000}\n@@ -13,8 +12,10 @@\n       - MCP_USER_AGENT=${MCP_USER_AGENT:-\"MCP Test Server (github.com/modelcontextprotocol/python-sdk)\"}\n     volumes:\n       # 挂载用户的本地目录到容器内的/host_files目录\n       - /Users/liuyanzhi/Desktop:/host_files\n+    extra_hosts:\n+      - \"host.docker.internal:host-gateway\"\n     restart: unless-stopped\n     healthcheck:\n       test: [\"CMD\", \"curl\", \"-f\", \"http://localhost:8000/sse\"]\n       interval: 30s\n"
                 }
             ],
             "date": 1741245882812,

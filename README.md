@@ -247,25 +247,35 @@ docker compose down
 
 ### 传统Python部署
 
-1. 安装依赖：
+1. 安装系统依赖：
 ```bash
-# 安装uv
-pip install uv
-
-# 安装系统依赖
 # Ubuntu/Debian
-sudo apt-get install poppler-utils
+sudo apt-get update
+sudo apt-get install -y poppler-utils tesseract-ocr tesseract-ocr-chi-sim
+
 # macOS
-brew install poppler
+brew install poppler tesseract tesseract-lang
+
+# Windows
+# 1. 下载并安装Tesseract: https://github.com/UB-Mannheim/tesseract/wiki
+# 2. 将Tesseract添加到系统PATH
 ```
 
-2. 运行服务器：
+2. 安装Python依赖：
 ```bash
-# 安装项目依赖
-uv pip install -e ".[dev]"
+# 创建虚拟环境
+python -m venv venv
+source venv/bin/activate  # Linux/Mac
+# 或
+.\venv\Scripts\activate  # Windows
 
-# 启动服务器
-uv run mcp-tool --transport sse --port 8000
+# 安装依赖
+pip install -r requirements.txt
+```
+
+3. 启动服务：
+```bash
+python -m mcp_tool
 ```
 
 ## 配置

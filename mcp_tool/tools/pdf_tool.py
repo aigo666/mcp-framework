@@ -13,6 +13,8 @@ from typing import Dict, List, Any
 import mcp.types as types
 from . import BaseTool, ToolRegistry
 from PIL import Image
+import io
+import pytesseract
 
 @ToolRegistry.register
 class PdfTool(BaseTool):
@@ -123,6 +125,33 @@ class PdfTool(BaseTool):
                 text=f"错误: 快速预览PDF时发生错误: {str(e)}\n{error_details}"
             )]
     
+    async def _analyze_image(self, image_bytes: bytes, lang: str = 'chi_sim+eng') -> str:
+        """
+        分析图片内容，识别文字和场景
+
+        Args:
+            image_bytes: 图片的二进制数据
+            lang: OCR语言，默认中文简体+英文
+
+        Returns:
+            str: 图片分析结果
+        """
+        try:
+            # 将二进制数据转换为PIL Image对象
+            image = Image.open(io.BytesIO(image_bytes))
+            
+            # 进行OCR文字识别
+            text = pytesseract.image_to_string(image, lang=lang)
+            
+            # 如果识别出文字，返回结果
+            if text.strip():
+                return f"图片中识别出的文字：\n{text.strip()}"
+            else:
+                return "未在图片中识别出文字"
+                
+        except Exception as e:
+            return f"图片分析失败: {str(e)}"
+
     async def _full_parse_pdf(self, file_path: str) -> List[types.TextContent | types.ImageContent | types.EmbeddedResource]:
         """
         完整解析PDF文件，提取文本和图片内容
@@ -168,11 +197,18 @@ class PdfTool(BaseTool):
                         with open(img_temp_path, "wb") as img_file:
                             img_file.write(image_bytes)
                         
-                        # 添加图片到结果
+                        # 分析图片内容
+                        image_analysis = await self._analyze_image(image_bytes)
+                        
+                        # 添加图片和分析结果到结果列表
                         results.append(types.ImageContent(
                             type="image",
                             title=f"第{page_num + 1}页 图片{img_idx + 1}",
                             image_data=image_bytes
+                        ))
+                        results.append(types.TextContent(
+                            type="text",
+                            text=f"第{page_num + 1}页 图片{img_idx + 1}分析结果：\n{image_analysis}\n---"
                         ))
                     except Exception as img_error:
                         results.append(types.TextContent(

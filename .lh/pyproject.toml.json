@@ -3,7 +3,7 @@
     "activeCommit": 0,
     "commits": [
         {
-            "activePatchIndex": 12,
+            "activePatchIndex": 14,
             "patches": [
                 {
                     "date": 1741245105746,
@@ -56,6 +56,14 @@
                 {
                     "date": 1741529379889,
                     "content": "Index: \n===================================================================\n--- \n+++ \n@@ -27,10 +27,9 @@\n     \"pdf2image>=1.16.0\",\n     \"Pillow>=9.0.0\",\n     \"pymupdf4llm==0.0.17\",\n     \"PyMuPDF>=1.22.0\",\n-    \"python-docx>=0.8.11\",\n-    \"requests>=2.28.0\"\n+    \"python-docx>=0.8.11\"\n ]\n \n [project.scripts]\n mcp-simple-tool = \"mcp_simple_tool.server:main\"\n"
+                },
+                {
+                    "date": 1741660115759,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -27,9 +27,11 @@\n     \"pdf2image>=1.16.0\",\n     \"Pillow>=9.0.0\",\n     \"pymupdf4llm==0.0.17\",\n     \"PyMuPDF>=1.22.0\",\n-    \"python-docx>=0.8.11\"\n+    \"python-docx>=0.8.11\",\n+    \"pandas>=2.0.0\",\n+    \"openpyxl>=3.1.0\"\n ]\n \n [project.scripts]\n mcp-simple-tool = \"mcp_simple_tool.server:main\"\n"
+                },
+                {
+                    "date": 1741665039026,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -24,14 +24,15 @@\n     \"httpx>=0.27\", \n     \"mcp\",\n     \"PyPDF2>=3.0.0\",\n     \"pdf2image>=1.16.0\",\n-    \"Pillow>=9.0.0\",\n+    \"Pillow>=10.0.0\",\n     \"pymupdf4llm==0.0.17\",\n     \"PyMuPDF>=1.22.0\",\n     \"python-docx>=0.8.11\",\n     \"pandas>=2.0.0\",\n-    \"openpyxl>=3.1.0\"\n+    \"openpyxl>=3.1.0\",\n+    \"pytesseract>=0.3.10\",\n ]\n \n [project.scripts]\n mcp-simple-tool = \"mcp_simple_tool.server:main\"\n"
                 }
             ],
             "date": 1741245105746,
