@@ -15,6 +15,8 @@ from . import BaseTool, ToolRegistry
 from PIL import Image
 import io
 import pytesseract
+import base64
+import imghdr
 
 @ToolRegistry.register
 class PdfTool(BaseTool):
@@ -125,6 +127,15 @@ class PdfTool(BaseTool):
                 text=f"错误: 快速预览PDF时发生错误: {str(e)}\n{error_details}"
             )]
     
+    def _get_image_mime_type(self, image_bytes: bytes) -> str:
+        """
+        获取图片的MIME类型
+        """
+        image_type = imghdr.what(None, image_bytes)
+        if image_type:
+            return f"image/{image_type}"
+        return "image/png"  # 默认返回PNG类型
+
     async def _analyze_image(self, image_bytes: bytes, lang: str = 'chi_sim+eng') -> str:
         """
         分析图片内容，识别文字和场景
@@ -200,11 +211,18 @@ class PdfTool(BaseTool):
                         # 分析图片内容
                         image_analysis = await self._analyze_image(image_bytes)
                         
+                        # 获取图片的MIME类型
+                        mime_type = self._get_image_mime_type(image_bytes)
+                        
+                        # 将图片数据转换为Base64编码
+                        image_data = base64.b64encode(image_bytes).decode('utf-8')
+                        
                         # 添加图片和分析结果到结果列表
                         results.append(types.ImageContent(
                             type="image",
                             title=f"第{page_num + 1}页 图片{img_idx + 1}",
-                            image_data=image_bytes
+                            data=image_data,
+                            mimeType=mime_type
                         ))
                         results.append(types.TextContent(
                             type="text",
