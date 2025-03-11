@@ -13,6 +13,8 @@ services:
     volumes:
       # 挂载用户的本地目录到容器内的/host_files目录
       - /Users/liuyanzhi/Desktop:/host_files
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
     restart: unless-stopped
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:8000/sse"]
