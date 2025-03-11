@@ -168,12 +168,8 @@ class PdfTool(BaseTool):
         完整解析PDF文件，提取文本和图片内容
         """
         results = []
-        temp_dir = None
         
         try:
-            # 创建临时目录存储图片
-            temp_dir = tempfile.mkdtemp()
-            
             # 使用PyMuPDF提取文本和图片
             doc = fitz.open(file_path)
             
@@ -195,44 +191,33 @@ class PdfTool(BaseTool):
                         text=f"第{page_num + 1}页:\n{text}\n---"
                     ))
                 
-                # 提取图片
+                # 提取图片并进行OCR识别
                 image_list = page.get_images()
-                for img_idx, img_info in enumerate(image_list):
-                    try:
-                        xref = img_info[0]
-                        base_image = doc.extract_image(xref)
-                        image_bytes = base_image["image"]
-                        
-                        # 保存图片到临时文件
-                        img_temp_path = os.path.join(temp_dir, f"page_{page_num + 1}_img_{img_idx + 1}.png")
-                        with open(img_temp_path, "wb") as img_file:
-                            img_file.write(image_bytes)
-                        
-                        # 分析图片内容
-                        image_analysis = await self._analyze_image(image_bytes)
-                        
-                        # 获取图片的MIME类型
-                        mime_type = self._get_image_mime_type(image_bytes)
-                        
-                        # 将图片数据转换为Base64编码
-                        image_data = base64.b64encode(image_bytes).decode('utf-8')
-                        
-                        # 添加图片和分析结果到结果列表
-                        results.append(types.ImageContent(
-                            type="image",
-                            title=f"第{page_num + 1}页 图片{img_idx + 1}",
-                            data=image_data,
-                            mimeType=mime_type
-                        ))
-                        results.append(types.TextContent(
-                            type="text",
-                            text=f"第{page_num + 1}页 图片{img_idx + 1}分析结果：\n{image_analysis}\n---"
-                        ))
-                    except Exception as img_error:
-                        results.append(types.TextContent(
-                            type="text",
-                            text=f"警告: 提取第{page_num + 1}页图片{img_idx + 1}时出错: {str(img_error)}"
-                        ))
+                if image_list:
+                    results.append(types.TextContent(
+                        type="text",
+                        text=f"第{page_num + 1}页包含{len(image_list)}张图片"
+                    ))
+                    
+                    for img_idx, img_info in enumerate(image_list):
+                        try:
+                            xref = img_info[0]
+                            base_image = doc.extract_image(xref)
+                            image_bytes = base_image["image"]
+                            
+                            # 分析图片内容
+                            image_analysis = await self._analyze_image(image_bytes)
+                            
+                            # 只添加OCR识别结果
+                            results.append(types.TextContent(
+                                type="text",
+                                text=f"第{page_num + 1}页 图片{img_idx + 1}分析结果：\n{image_analysis}\n---"
+                            ))
+                        except Exception as img_error:
+                            results.append(types.TextContent(
+                                type="text",
+                                text=f"警告: 处理第{page_num + 1}页图片{img_idx + 1}时出错: {str(img_error)}"
+                            ))
             
             doc.close()
             return results
@@ -242,9 +227,4 @@ class PdfTool(BaseTool):
             return [types.TextContent(
                 type="text",
                 text=f"错误: 完整解析PDF时发生错误: {str(e)}\n{error_details}"
-            )]
-            
-        finally:
-            # 清理临时目录
-            if temp_dir and os.path.exists(temp_dir):
-                shutil.rmtree(temp_dir) 
+            )] 
