@@ -25,6 +25,7 @@ wheels/
 .vscode/
 *.swp
 *.swo
+.lh/
 
 # Environment
 .env

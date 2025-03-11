@@ -249,31 +249,56 @@ docker compose down
 
 1. 安装依赖：
 ```bash
-# 创建虚拟环境
-python -m venv venv
-source venv/bin/activate  # Linux/Mac
-# 或
-.\venv\Scripts\activate  # Windows
+# 安装uv
+pip install uv
 
-# 安装依赖
-pip install -r requirements.txt
+# 安装系统依赖
+# Ubuntu/Debian
+sudo apt-get install poppler-utils
+# macOS
+brew install poppler
 ```
 
-2. 启动服务：
+2. 运行服务器：
 ```bash
-python -m mcp_tool
+# 安装项目依赖
+uv pip install -e ".[dev]"
+
+# 启动服务器
+uv run mcp-tool --transport sse --port 8000
 ```
+
+## 配置
+
+### 环境变量
+
+在`.env`文件中配置：
+
+- `MCP_SERVER_PORT`: 服务器端口（默认: 8000）
+- `MCP_SERVER_HOST`: 绑定地址（默认: 0.0.0.0）
+- `DEBUG`: 调试模式（默认: false）
+- `MCP_USER_AGENT`: 自定义User-Agent
+
+## 依赖项
+
+主要依赖：
+- `mcp`: Model Context Protocol实现
+- `PyMuPDF`: PDF文档处理
+- `python-docx`: Word文档处理
+- `pandas`和`openpyxl`: Excel文件处理
+- `httpx`: 异步HTTP客户端
+- `anyio`: 异步I/O支持
+- `click`: 命令行接口
 
 ## 贡献指南
 
-欢迎提交Pull Request来改进这个项目。在提交PR之前，请确保：
-
-1. 代码符合PEP 8规范
-2. 添加了适当的测试用例
-3. 更新了相关文档
-4. 所有测试都能通过
+1. Fork仓库
+2. 创建功能分支 (`git checkout -b feature/amazing-feature`)
+3. 提交更改 (`git commit -m 'Add some amazing feature'`)
+4. 推送到分支 (`git push origin feature/amazing-feature`)
+5. 打开Pull Request
 
 ## 许可证
 
-本项目采用MIT许可证。详见[LICENSE](LICENSE)文件。
+本项目采用MIT许可证 - 详情请参阅[LICENSE](LICENSE)文件。
 
