@@ -1,13 +1,31 @@
 # MCP开发框架
 [![smithery badge](https://smithery.ai/badge/@aigo666/mcp-framework)](https://smithery.ai/server/@aigo666/mcp-framework)
 
-一个强大的MCP（Model Context Protocol）开发框架，用于创建与大语言模型交互的自定义工具。该框架提供了一套完整的工具集，可以轻松地扩展Cursor IDE的功能，实现网页内容获取、文件处理（PDF、Word、Excel）等高级功能。
+一个强大的MCP（Model Context Protocol）开发框架，用于创建与大语言模型交互的自定义工具。该框架提供了一套完整的工具集，可以轻松地扩展Cursor IDE的功能，实现网页内容获取、文件处理（PDF、Word、Excel）以及AI对话等高级功能。
 
 ## 主要功能
 
 本框架提供了以下核心功能：
 
-### 1. 综合文件处理
+### 1. MaxKB AI对话
+
+使用`maxkb`工具可以与MaxKB API进行交互，实现智能对话功能。
+
+- **用法**: `maxkb "您的问题或指令"`
+- **功能**: 发送消息到MaxKB API并获取AI回复
+- **参数**: 
+  - `message` - 要发送的消息内容（必需）
+  - `re_chat` - 是否重新开始对话（可选，默认false）
+  - `stream` - 是否使用流式响应（可选，默认true）
+- **返回**: AI的回复内容
+- **特点**: 
+  - 支持流式响应
+  - 自动重试机制
+  - 完整的错误处理
+  - 60秒超时保护
+  - 保持连接配置优化
+
+### 2. 综合文件处理
 
 使用`file`工具可以自动识别文件类型并选择合适的处理方式，支持PDF、Word和Excel文件。
 
@@ -19,7 +37,7 @@
 - **参数**: `file_path` - 文件的本地路径
 - **返回**: 根据文件类型返回相应的处理结果
 
-### 2. PDF文档处理
+### 3. PDF文档处理
 
 使用`pdf`工具可以处理PDF文档，支持两种处理模式：
 
@@ -37,7 +55,7 @@
   - 自动处理大型文件
   - 支持图片提取和保存
 
-### 3. Word文档解析
+### 4. Word文档解析
 
 使用`word`工具可以解析Word文档，提取文本、表格和图片信息。
 
@@ -47,7 +65,7 @@
 - **返回**: 文档的文本内容、表格和图片信息
 - **特点**: 使用python-docx库提供高质量的文本和表格提取
 
-### 4. Excel文件处理
+### 5. Excel文件处理
 
 使用`excel`工具可以解析Excel文件，提供完整的表格数据和结构信息。
 
@@ -65,7 +83,7 @@
   - 支持多工作表处理
   - 自动处理数据类型转换
 
-### 5. 网页内容获取
+### 6. 网页内容获取
 
 使用`url`工具可以获取任何网页的内容。
 
@@ -210,6 +228,20 @@ class YourTool(BaseTool):
 
 ## 部署指南
 
+### 环境变量配置
+
+在开始部署之前，请确保配置以下环境变量：
+
+1. **MaxKB工具配置**:
+   - `MAXKB_HOST` - MaxKB API的主机地址
+   - `MAXKB_CHAT_ID` - 对话ID
+   - `MAXKB_APPLICATION_ID` - 应用ID
+   - `MAXKB_AUTHORIZATION` - 授权令牌
+
+2. **其他配置**（可选）:
+   - `HTTPCORE_TIMEOUT` - HTTP请求超时时间（默认60秒）
+   - `HTTPX_TIMEOUT` - HTTPX客户端超时时间（默认60秒）
+
 ### Docker部署（推荐）
 
 1. 初始设置：
@@ -238,7 +270,7 @@ docker compose down
 ```
 
 3. 访问服务：
-- SSE端点: http://localhost:8000/sse
+   - SSE端点: http://localhost:8000/sse
 
 4. Cursor IDE配置：
 - 设置 → 功能 → 添加MCP服务器
