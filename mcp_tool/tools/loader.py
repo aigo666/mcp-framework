@@ -20,7 +20,6 @@ def load_tools() -> List[Type[BaseTool]]:
     package_path = os.path.dirname(__file__)
     
     # 获取所有子模块
-    tool_modules = []
     for _, name, is_pkg in pkgutil.iter_modules([package_path]):
         # 跳过__init__.py和loader.py
         if name in ['__init__', 'loader']:
@@ -29,15 +28,13 @@ def load_tools() -> List[Type[BaseTool]]:
         # 导入模块
         module_name = f"{__package__}.{name}"
         try:
-            module = importlib.import_module(module_name)
-            tool_modules.append(module)
+            importlib.import_module(module_name)
         except ImportError as e:
             print(f"Warning: Failed to import module {module_name}: {e}")
     
     # 收集所有已注册的工具类
     tools = list(ToolRegistry._tools.values())
     
-    # 返回工具类列表
     return tools
 
 def get_tool_instances() -> dict:

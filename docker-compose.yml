@@ -10,9 +10,17 @@ services:
       - MCP_SERVER_HOST=${MCP_SERVER_HOST:-0.0.0.0}
       - DEBUG=${DEBUG:-false}
       - MCP_USER_AGENT=${MCP_USER_AGENT:-"MCP Test Server (github.com/modelcontextprotocol/python-sdk)"}
+      # MaxKB配置
+      - MAXKB_HOST=${MAXKB_HOST:-http://host.docker.internal:8080}
+      - MAXKB_CHAT_ID=${MAXKB_CHAT_ID}
+      - MAXKB_APPLICATION_ID=${MAXKB_APPLICATION_ID}
+      - MAXKB_AUTHORIZATION=${MAXKB_AUTHORIZATION}
+      # 挂载目录配置
+      - HOST_MOUNT_SOURCE=${HOST_MOUNT_SOURCE}
+      - HOST_MOUNT_TARGET=${HOST_MOUNT_TARGET}
     volumes:
-      # 挂载用户的本地目录到容器内的/host_files目录
-      - /Users/liuyanzhi/Desktop:/host_files
+      # 挂载用户的本地目录到容器内的指定目录
+      - ${HOST_MOUNT_SOURCE:-/tmp}:${HOST_MOUNT_TARGET:-/host_files}
     extra_hosts:
       - "host.docker.internal:host-gateway"
     restart: unless-stopped

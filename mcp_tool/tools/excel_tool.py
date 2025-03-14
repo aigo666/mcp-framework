@@ -21,23 +21,23 @@ class ExcelTool(BaseTool):
     }
     
     async def execute(self, arguments: dict) -> list[types.TextContent | types.ImageContent | types.EmbeddedResource]:
-        """解析Excel文件内容"""
+        """解析Excel文件并返回内容"""
         if "file_path" not in arguments:
             return [types.TextContent(
                 type="text",
                 text="Error: Missing required argument 'file_path'"
             )]
-            
-        file_path = arguments["file_path"]
         
-        # 检查文件是否存在
+        file_path = arguments["file_path"]
+        # 处理文件路径，支持挂载目录的转换
+        file_path = self.process_file_path(file_path)
+        
         if not os.path.exists(file_path):
             return [types.TextContent(
                 type="text",
                 text=f"Error: File not found at path: {file_path}"
             )]
-            
-        # 检查文件扩展名
+        
         if not file_path.lower().endswith(('.xlsx', '.xls', '.xlsm')):
             return [types.TextContent(
                 type="text",

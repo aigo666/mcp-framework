@@ -3,11 +3,15 @@
     "activeCommit": 0,
     "commits": [
         {
-            "activePatchIndex": 0,
+            "activePatchIndex": 1,
             "patches": [
                 {
                     "date": 1741345451458,
                     "content": "Index: \n===================================================================\n--- \n+++ \n"
+                },
+                {
+                    "date": 1741764393435,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -19,26 +19,23 @@\n     # 获取当前模块的路径\n     package_path = os.path.dirname(__file__)\n     \n     # 获取所有子模块\n-    tool_modules = []\n     for _, name, is_pkg in pkgutil.iter_modules([package_path]):\n         # 跳过__init__.py和loader.py\n         if name in ['__init__', 'loader']:\n             continue\n         \n         # 导入模块\n         module_name = f\"{__package__}.{name}\"\n         try:\n-            module = importlib.import_module(module_name)\n-            tool_modules.append(module)\n+            importlib.import_module(module_name)\n         except ImportError as e:\n             print(f\"Warning: Failed to import module {module_name}: {e}\")\n     \n     # 收集所有已注册的工具类\n     tools = list(ToolRegistry._tools.values())\n     \n-    # 返回工具类列表\n     return tools\n \n def get_tool_instances() -> dict:\n     \"\"\"\n"
                 }
             ],
             "date": 1741345451458,

@@ -3,7 +3,7 @@
     "activeCommit": 0,
     "commits": [
         {
-            "activePatchIndex": 14,
+            "activePatchIndex": 20,
             "patches": [
                 {
                     "date": 1741245105746,
@@ -64,6 +64,30 @@
                 {
                     "date": 1741665039026,
                     "content": "Index: \n===================================================================\n--- \n+++ \n@@ -24,14 +24,15 @@\n     \"httpx>=0.27\", \n     \"mcp\",\n     \"PyPDF2>=3.0.0\",\n     \"pdf2image>=1.16.0\",\n-    \"Pillow>=9.0.0\",\n+    \"Pillow>=10.0.0\",\n     \"pymupdf4llm==0.0.17\",\n     \"PyMuPDF>=1.22.0\",\n     \"python-docx>=0.8.11\",\n     \"pandas>=2.0.0\",\n-    \"openpyxl>=3.1.0\"\n+    \"openpyxl>=3.1.0\",\n+    \"pytesseract>=0.3.10\",\n ]\n \n [project.scripts]\n mcp-simple-tool = \"mcp_simple_tool.server:main\"\n"
+                },
+                {
+                    "date": 1741667967285,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -31,8 +31,11 @@\n     \"python-docx>=0.8.11\",\n     \"pandas>=2.0.0\",\n     \"openpyxl>=3.1.0\",\n     \"pytesseract>=0.3.10\",\n+    \"easyocr>=1.7.1\",\n+    \"torch>=2.0.0\",\n+    \"numpy>=1.24.0\",\n ]\n \n [project.scripts]\n mcp-simple-tool = \"mcp_simple_tool.server:main\"\n"
+                },
+                {
+                    "date": 1741668087536,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -22,17 +22,14 @@\n     \"anyio>=4.5\", \n     \"click>=8.1.0\", \n     \"httpx>=0.27\", \n     \"mcp\",\n-    \"PyPDF2>=3.0.0\",\n-    \"pdf2image>=1.16.0\",\n     \"Pillow>=10.0.0\",\n     \"pymupdf4llm==0.0.17\",\n     \"PyMuPDF>=1.22.0\",\n     \"python-docx>=0.8.11\",\n     \"pandas>=2.0.0\",\n     \"openpyxl>=3.1.0\",\n-    \"pytesseract>=0.3.10\",\n     \"easyocr>=1.7.1\",\n     \"torch>=2.0.0\",\n     \"numpy>=1.24.0\",\n ]\n"
+                },
+                {
+                    "date": 1741669852349,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -22,17 +22,17 @@\n     \"anyio>=4.5\", \n     \"click>=8.1.0\", \n     \"httpx>=0.27\", \n     \"mcp\",\n+    \"PyPDF2>=3.0.0\",\n+    \"pdf2image>=1.16.0\",\n     \"Pillow>=10.0.0\",\n     \"pymupdf4llm==0.0.17\",\n     \"PyMuPDF>=1.22.0\",\n     \"python-docx>=0.8.11\",\n     \"pandas>=2.0.0\",\n     \"openpyxl>=3.1.0\",\n-    \"easyocr>=1.7.1\",\n-    \"torch>=2.0.0\",\n-    \"numpy>=1.24.0\",\n+    \"pytesseract>=0.3.10\",\n ]\n \n [project.scripts]\n mcp-simple-tool = \"mcp_simple_tool.server:main\"\n"
+                },
+                {
+                    "date": 1741764667021,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -1,16 +1,12 @@\n [project]\n-name = \"mcp-simple-tool\"\n+name = \"mcp-tool\"\n version = \"0.1.0\"\n-description = \"A simple MCP server exposing a website fetching tool\"\n+description = \"MCP工具集合，包含文件处理和网页获取功能\"\n readme = \"README.md\"\n requires-python = \">=3.10\"\n-authors = [{ name = \"Anthropic, PBC.\" }]\n-maintainers = [\n-    { name = \"David Soria Parra\", email = \"davidsp@anthropic.com\" },\n-    { name = \"Justin Spahr-Summers\", email = \"justin@anthropic.com\" },\n-]\n-keywords = [\"mcp\", \"llm\", \"automation\", \"web\", \"fetch\"]\n+authors = [{ name = \"aigo666\" }]\n+keywords = [\"mcp\", \"llm\", \"automation\", \"web\", \"fetch\", \"pdf\", \"word\", \"excel\"]\n license = { text = \"MIT\" }\n classifiers = [\n     \"Development Status :: 4 - Beta\",\n     \"Intended Audience :: Developers\",\n@@ -34,9 +30,9 @@\n     \"pytesseract>=0.3.10\",\n ]\n \n [project.scripts]\n-mcp-simple-tool = \"mcp_simple_tool.server:main\"\n+mcp-tool = \"mcp_tool.server:main\"\n \n [project.optional-dependencies]\n dev = [\"pyright>=1.1.378\", \"pytest>=8.3.3\", \"ruff>=0.6.9\", \"pytest-asyncio>=0.23.5\"]\n \n@@ -44,12 +40,12 @@\n requires = [\"hatchling\"]\n build-backend = \"hatchling.build\"\n \n [tool.hatch.build.targets.wheel]\n-packages = [\"mcp_simple_tool\"]\n+packages = [\"mcp_tool\"]\n \n [tool.pyright]\n-include = [\"mcp_simple_tool\"]\n+include = [\"mcp_tool\"]\n venvPath = \".\"\n venv = \".venv\"\n \n [tool.ruff.lint]\n"
+                },
+                {
+                    "date": 1741766950590,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -1,8 +1,8 @@\n [project]\n-name = \"mcp-tool\"\n+name = \"mcp-simple-tool\"\n version = \"0.1.0\"\n-description = \"MCP工具集合，包含文件处理和网页获取功能\"\n+description = \"A simple MCP server exposing a website fetching tool\"\n readme = \"README.md\"\n requires-python = \">=3.10\"\n authors = [{ name = \"aigo666\" }]\n keywords = [\"mcp\", \"llm\", \"automation\", \"web\", \"fetch\", \"pdf\", \"word\", \"excel\"]\n@@ -30,9 +30,9 @@\n     \"pytesseract>=0.3.10\",\n ]\n \n [project.scripts]\n-mcp-tool = \"mcp_tool.server:main\"\n+mcp-simple-tool = \"mcp_tool.server:main\"\n \n [project.optional-dependencies]\n dev = [\"pyright>=1.1.378\", \"pytest>=8.3.3\", \"ruff>=0.6.9\", \"pytest-asyncio>=0.23.5\"]\n \n"
+                },
+                {
+                    "date": 1741767018758,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -1,8 +1,8 @@\n [project]\n name = \"mcp-simple-tool\"\n version = \"0.1.0\"\n-description = \"A simple MCP server exposing a website fetching tool\"\n+description = \"MCP工具集合，包含文件处理和网页获取功能\"\n readme = \"README.md\"\n requires-python = \">=3.10\"\n authors = [{ name = \"aigo666\" }]\n keywords = [\"mcp\", \"llm\", \"automation\", \"web\", \"fetch\", \"pdf\", \"word\", \"excel\"]\n"
                 }
             ],
             "date": 1741245105746,

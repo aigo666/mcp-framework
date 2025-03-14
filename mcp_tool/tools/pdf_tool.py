@@ -51,9 +51,9 @@ class PdfTool(BaseTool):
         
         Args:
             arguments: 参数字典，必须包含'file_path'键，可选'mode'键
-            
+        
         Returns:
-            PDF内容列表
+            解析结果列表
         """
         if "file_path" not in arguments:
             return [types.TextContent(
@@ -62,33 +62,27 @@ class PdfTool(BaseTool):
             )]
         
         file_path = arguments["file_path"]
-        mode = arguments.get("mode", "full")
+        # 处理文件路径，支持挂载目录的转换
+        file_path = self.process_file_path(file_path)
         
-        # 检查文件是否存在
         if not os.path.exists(file_path):
             return [types.TextContent(
                 type="text",
                 text=f"错误: 文件不存在: {file_path}"
             )]
-            
-        # 检查文件扩展名
+        
         if not file_path.lower().endswith('.pdf'):
             return [types.TextContent(
                 type="text",
                 text=f"错误: 文件不是PDF格式: {file_path}"
             )]
         
-        try:
-            if mode == "quick":
-                return await self._quick_preview_pdf(file_path)
-            else:
-                return await self._full_parse_pdf(file_path)
-        except Exception as e:
-            error_details = traceback.format_exc()
-            return [types.TextContent(
-                type="text",
-                text=f"错误: 处理PDF文件时发生错误: {str(e)}\n{error_details}"
-            )]
+        mode = arguments.get("mode", "full")
+        
+        if mode == "quick":
+            return await self._quick_preview_pdf(file_path)
+        else:
+            return await self._full_parse_pdf(file_path)
     
     async def _quick_preview_pdf(self, file_path: str) -> List[types.TextContent | types.ImageContent | types.EmbeddedResource]:
         """

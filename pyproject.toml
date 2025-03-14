@@ -1,15 +1,11 @@
 [project]
 name = "mcp-simple-tool"
 version = "0.1.0"
-description = "A simple MCP server exposing a website fetching tool"
+description = "MCP工具集合，包含文件处理和网页获取功能"
 readme = "README.md"
 requires-python = ">=3.10"
-authors = [{ name = "Anthropic, PBC." }]
-maintainers = [
-    { name = "David Soria Parra", email = "davidsp@anthropic.com" },
-    { name = "Justin Spahr-Summers", email = "justin@anthropic.com" },
-]
-keywords = ["mcp", "llm", "automation", "web", "fetch"]
+authors = [{ name = "aigo666" }]
+keywords = ["mcp", "llm", "automation", "web", "fetch", "pdf", "word", "excel"]
 license = { text = "MIT" }
 classifiers = [
     "Development Status :: 4 - Beta",
@@ -35,7 +31,7 @@ dependencies = [
 ]
 
 [project.scripts]
-mcp-simple-tool = "mcp_simple_tool.server:main"
+mcp-simple-tool = "mcp_tool.server:main"
 
 [project.optional-dependencies]
 dev = ["pyright>=1.1.378", "pytest>=8.3.3", "ruff>=0.6.9", "pytest-asyncio>=0.23.5"]
@@ -45,10 +41,10 @@ requires = ["hatchling"]
 build-backend = "hatchling.build"
 
 [tool.hatch.build.targets.wheel]
-packages = ["mcp_simple_tool"]
+packages = ["mcp_tool"]
 
 [tool.pyright]
-include = ["mcp_simple_tool"]
+include = ["mcp_tool"]
 venvPath = "."
 venv = ".venv"
 

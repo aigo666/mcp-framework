@@ -36,7 +36,7 @@ class WordTool(BaseTool):
             arguments: 参数字典，必须包含'file_path'键
             
         Returns:
-            Word文档内容列表
+            解析结果列表
         """
         if "file_path" not in arguments:
             return [types.TextContent(
@@ -44,7 +44,10 @@ class WordTool(BaseTool):
                 text="错误: 缺少必要参数 'file_path'"
             )]
         
-        return await self._parse_word_document(arguments["file_path"])
+        # 处理文件路径，支持挂载目录的转换
+        file_path = self.process_file_path(arguments["file_path"])
+        
+        return await self._parse_word_document(file_path)
     
     async def _parse_word_document(self, file_path: str) -> List[types.TextContent | types.ImageContent | types.EmbeddedResource]:
         """

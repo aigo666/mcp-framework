@@ -310,16 +310,53 @@ pip install -r requirements.txt
 python -m mcp_tool
 ```
 
-## 配置
+## 配置说明
 
-### 环境变量
+### 环境变量配置
 
-在`.env`文件中配置：
+在`.env`文件中配置以下环境变量：
 
-- `MCP_SERVER_PORT`: 服务器端口（默认: 8000）
-- `MCP_SERVER_HOST`: 绑定地址（默认: 0.0.0.0）
-- `DEBUG`: 调试模式（默认: false）
-- `MCP_USER_AGENT`: 自定义User-Agent
+```bash
+# Server Configuration
+MCP_SERVER_PORT=8000        # 服务器端口
+MCP_SERVER_HOST=0.0.0.0     # 服务器主机
+
+# MaxKB配置
+MAXKB_HOST=http://host.docker.internal:8080  # MaxKB API主机地址
+MAXKB_CHAT_ID=your_chat_id_here              # MaxKB聊天ID
+MAXKB_APPLICATION_ID=your_application_id_here # MaxKB应用ID
+MAXKB_AUTHORIZATION=your_authorization_key    # MaxKB授权密钥
+
+# 调试模式
+DEBUG=false                 # 是否启用调试模式
+
+# 用户代理
+MCP_USER_AGENT="MCP Test Server (github.com/modelcontextprotocol/python-sdk)"
+
+# 本地目录挂载配置
+HOST_MOUNT_SOURCE=/path/to/your/local/directory  # 本地目录路径
+HOST_MOUNT_TARGET=/host_files                    # 容器内挂载路径
+```
+
+### 本地目录挂载
+
+框架支持将本地目录挂载到容器中，以便工具可以访问本地文件。配置方法：
+
+1. 在`.env`文件中设置`HOST_MOUNT_SOURCE`和`HOST_MOUNT_TARGET`环境变量
+2. `HOST_MOUNT_SOURCE`是你本地机器上的目录路径
+3. `HOST_MOUNT_TARGET`是容器内的挂载路径（默认为`/host_files`）
+
+使用工具时，可以直接引用本地文件路径，框架会自动将其转换为容器内的路径。例如：
+
+```
+# 使用PDF工具处理本地文件
+pdf "/Users/username/Documents/example.pdf"
+
+# 框架会自动将路径转换为容器内路径
+# 例如："/host_files/example.pdf"
+```
+
+这样，你就可以在不修改工具代码的情况下，轻松访问本地文件。
 
 ## 依赖项
 

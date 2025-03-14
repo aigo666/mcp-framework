@@ -43,13 +43,13 @@ class FileTool(BaseTool):
     
     async def execute(self, arguments: Dict[str, Any]) -> List[types.TextContent | types.ImageContent | types.EmbeddedResource]:
         """
-        根据文件类型选择合适的处理工具
+        解析文件内容
         
         Args:
             arguments: 参数字典，必须包含'file_path'键
-            
+        
         Returns:
-            文件内容列表
+            解析结果列表
         """
         if "file_path" not in arguments:
             return [types.TextContent(
@@ -58,8 +58,9 @@ class FileTool(BaseTool):
             )]
         
         file_path = arguments["file_path"]
+        # 处理文件路径，支持挂载目录的转换
+        file_path = self.process_file_path(file_path)
         
-        # 检查文件是否存在
         if not os.path.exists(file_path):
             return [types.TextContent(
                 type="text",

@@ -3,7 +3,7 @@
     "activeCommit": 0,
     "commits": [
         {
-            "activePatchIndex": 23,
+            "activePatchIndex": 32,
             "patches": [
                 {
                     "date": 1741245882812,
@@ -100,6 +100,42 @@
                 {
                     "date": 1741606631529,
                     "content": "Index: \n===================================================================\n--- \n+++ \n@@ -2,9 +2,8 @@\n \n services:\n   mcp-server:\n     build: .\n-    network_mode: host\n     ports:\n       - \"${MCP_SERVER_PORT:-8000}:8000\"\n     environment:\n       - MCP_SERVER_PORT=${MCP_SERVER_PORT:-8000}\n@@ -13,8 +12,10 @@\n       - MCP_USER_AGENT=${MCP_USER_AGENT:-\"MCP Test Server (github.com/modelcontextprotocol/python-sdk)\"}\n     volumes:\n       # 挂载用户的本地目录到容器内的/host_files目录\n       - /Users/liuyanzhi/Desktop:/host_files\n+    extra_hosts:\n+      - \"host.docker.internal:host-gateway\"\n     restart: unless-stopped\n     healthcheck:\n       test: [\"CMD\", \"curl\", \"-f\", \"http://localhost:8000/sse\"]\n       interval: 30s\n"
+                },
+                {
+                    "date": 1741763906004,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -1,7 +1,28 @@\n version: '3.8'\n \n services:\n+  mcp:\n+    build: .\n+    ports:\n+      - \"8000:8000\"\n+    volumes:\n+      - .:/app\n+    environment:\n+      - DEBUG=false\n+      - MCP_SERVER_PORT=8000\n+      - MCP_SERVER_HOST=0.0.0.0\n+    extra_hosts:\n+      - \"host.docker.internal:host-gateway\"\n+    # 如果使用方案2，需要加入maxkb的网络\n+    # networks:\n+    #   - maxkb_network\n+\n+# 如果使用方案2，需要定义外部网络\n+# networks:\n+#   maxkb_network:\n+#     external: true\n+\n   mcp-server:\n     build: .\n     ports:\n       - \"${MCP_SERVER_PORT:-8000}:8000\"\n"
+                },
+                {
+                    "date": 1741763923855,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -1,28 +1,7 @@\n version: '3.8'\n \n services:\n-  mcp:\n-    build: .\n-    ports:\n-      - \"8000:8000\"\n-    volumes:\n-      - .:/app\n-    environment:\n-      - DEBUG=false\n-      - MCP_SERVER_PORT=8000\n-      - MCP_SERVER_HOST=0.0.0.0\n-    extra_hosts:\n-      - \"host.docker.internal:host-gateway\"\n-    # 如果使用方案2，需要加入maxkb的网络\n-    # networks:\n-    #   - maxkb_network\n-\n-# 如果使用方案2，需要定义外部网络\n-# networks:\n-#   maxkb_network:\n-#     external: true\n-\n   mcp-server:\n     build: .\n     ports:\n       - \"${MCP_SERVER_PORT:-8000}:8000\"\n"
+                },
+                {
+                    "date": 1741765231098,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -9,8 +9,12 @@\n       - MCP_SERVER_PORT=${MCP_SERVER_PORT:-8000}\n       - MCP_SERVER_HOST=${MCP_SERVER_HOST:-0.0.0.0}\n       - DEBUG=${DEBUG:-false}\n       - MCP_USER_AGENT=${MCP_USER_AGENT:-\"MCP Test Server (github.com/modelcontextprotocol/python-sdk)\"}\n+      # MaxKB配置\n+      - MAXKB_HOST=${MAXKB_HOST:-http://host.docker.internal:8080}\n+      - MAXKB_CHAT_ID=${MAXKB_CHAT_ID}\n+      - MAXKB_APPLICATION_ID=${MAXKB_APPLICATION_ID}\n     volumes:\n       # 挂载用户的本地目录到容器内的/host_files目录\n       - /Users/liuyanzhi/Desktop:/host_files\n     extra_hosts:\n"
+                },
+                {
+                    "date": 1741775253149,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -13,8 +13,9 @@\n       # MaxKB配置\n       - MAXKB_HOST=${MAXKB_HOST:-http://host.docker.internal:8080}\n       - MAXKB_CHAT_ID=${MAXKB_CHAT_ID}\n       - MAXKB_APPLICATION_ID=${MAXKB_APPLICATION_ID}\n+      - MAXKB_AUTHORIZATION=${MAXKB_AUTHORIZATION}\n     volumes:\n       # 挂载用户的本地目录到容器内的/host_files目录\n       - /Users/liuyanzhi/Desktop:/host_files\n     extra_hosts:\n"
+                },
+                {
+                    "date": 1741776275523,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -12,9 +12,8 @@\n       - MCP_USER_AGENT=${MCP_USER_AGENT:-\"MCP Test Server (github.com/modelcontextprotocol/python-sdk)\"}\n       # MaxKB配置\n       - MAXKB_HOST=${MAXKB_HOST:-http://host.docker.internal:8080}\n       - MAXKB_CHAT_ID=${MAXKB_CHAT_ID}\n-      - MAXKB_APPLICATION_ID=${MAXKB_APPLICATION_ID}\n       - MAXKB_AUTHORIZATION=${MAXKB_AUTHORIZATION}\n     volumes:\n       # 挂载用户的本地目录到容器内的/host_files目录\n       - /Users/liuyanzhi/Desktop:/host_files\n"
+                },
+                {
+                    "date": 1741776374804,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -1,23 +1,16 @@\n-version: '3.8'\n+version: '3'\n \n services:\n   mcp-server:\n     build: .\n     ports:\n-      - \"${MCP_SERVER_PORT:-8000}:8000\"\n+      - \"8000:8000\"\n     environment:\n-      - MCP_SERVER_PORT=${MCP_SERVER_PORT:-8000}\n-      - MCP_SERVER_HOST=${MCP_SERVER_HOST:-0.0.0.0}\n-      - DEBUG=${DEBUG:-false}\n-      - MCP_USER_AGENT=${MCP_USER_AGENT:-\"MCP Test Server (github.com/modelcontextprotocol/python-sdk)\"}\n-      # MaxKB配置\n-      - MAXKB_HOST=${MAXKB_HOST:-http://host.docker.internal:8080}\n-      - MAXKB_CHAT_ID=${MAXKB_CHAT_ID}\n-      - MAXKB_AUTHORIZATION=${MAXKB_AUTHORIZATION}\n-    volumes:\n-      # 挂载用户的本地目录到容器内的/host_files目录\n-      - /Users/liuyanzhi/Desktop:/host_files\n+      - MAXKB_HOST=http://host.docker.internal:8080\n+      - MAXKB_CHAT_ID=f08b23b4-ff29-11ef-82b3-0242ac110002\n+      - MAXKB_APPLICATION_ID=application-e689000edd89acb58572482651fa88e0\n+      - MAXKB_AUTHORIZATION=application-e689000edd89acb58572482651fa88e0\n     extra_hosts:\n       - \"host.docker.internal:host-gateway\"\n     restart: unless-stopped\n     healthcheck:\n"
+                },
+                {
+                    "date": 1741776418839,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -1,16 +1,23 @@\n-version: '3'\n+version: '3.8'\n \n services:\n   mcp-server:\n     build: .\n     ports:\n-      - \"8000:8000\"\n+      - \"${MCP_SERVER_PORT:-8000}:8000\"\n     environment:\n-      - MAXKB_HOST=http://host.docker.internal:8080\n-      - MAXKB_CHAT_ID=f08b23b4-ff29-11ef-82b3-0242ac110002\n-      - MAXKB_APPLICATION_ID=application-e689000edd89acb58572482651fa88e0\n-      - MAXKB_AUTHORIZATION=application-e689000edd89acb58572482651fa88e0\n+      - MCP_SERVER_PORT=${MCP_SERVER_PORT:-8000}\n+      - MCP_SERVER_HOST=${MCP_SERVER_HOST:-0.0.0.0}\n+      - DEBUG=${DEBUG:-false}\n+      - MCP_USER_AGENT=${MCP_USER_AGENT:-\"MCP Test Server (github.com/modelcontextprotocol/python-sdk)\"}\n+      # MaxKB配置\n+      - MAXKB_HOST=${MAXKB_HOST:-http://host.docker.internal:8080}\n+      - MAXKB_CHAT_ID=${MAXKB_CHAT_ID}\n+      - MAXKB_AUTHORIZATION=${MAXKB_AUTHORIZATION}\n+    volumes:\n+      # 挂载用户的本地目录到容器内的/host_files目录\n+      - /Users/liuyanzhi/Desktop:/host_files\n     extra_hosts:\n       - \"host.docker.internal:host-gateway\"\n     restart: unless-stopped\n     healthcheck:\n"
+                },
+                {
+                    "date": 1741776952384,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -12,8 +12,9 @@\n       - MCP_USER_AGENT=${MCP_USER_AGENT:-\"MCP Test Server (github.com/modelcontextprotocol/python-sdk)\"}\n       # MaxKB配置\n       - MAXKB_HOST=${MAXKB_HOST:-http://host.docker.internal:8080}\n       - MAXKB_CHAT_ID=${MAXKB_CHAT_ID}\n+      - MAXKB_APPLICATION_ID=${MAXKB_APPLICATION_ID}\n       - MAXKB_AUTHORIZATION=${MAXKB_AUTHORIZATION}\n     volumes:\n       # 挂载用户的本地目录到容器内的/host_files目录\n       - /Users/liuyanzhi/Desktop:/host_files\n"
+                },
+                {
+                    "date": 1741944050259,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -14,11 +14,14 @@\n       - MAXKB_HOST=${MAXKB_HOST:-http://host.docker.internal:8080}\n       - MAXKB_CHAT_ID=${MAXKB_CHAT_ID}\n       - MAXKB_APPLICATION_ID=${MAXKB_APPLICATION_ID}\n       - MAXKB_AUTHORIZATION=${MAXKB_AUTHORIZATION}\n+      # 挂载目录配置\n+      - HOST_MOUNT_SOURCE=${HOST_MOUNT_SOURCE}\n+      - HOST_MOUNT_TARGET=${HOST_MOUNT_TARGET}\n     volumes:\n-      # 挂载用户的本地目录到容器内的/host_files目录\n-      - /Users/liuyanzhi/Desktop:/host_files\n+      # 挂载用户的本地目录到容器内的指定目录\n+      - ${HOST_MOUNT_SOURCE:-/tmp}:${HOST_MOUNT_TARGET:-/host_files}\n     extra_hosts:\n       - \"host.docker.internal:host-gateway\"\n     restart: unless-stopped\n     healthcheck:\n"
                 }
             ],
             "date": 1741245882812,

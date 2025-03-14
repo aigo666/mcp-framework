@@ -3,11 +3,15 @@
     "activeCommit": 0,
     "commits": [
         {
-            "activePatchIndex": 0,
+            "activePatchIndex": 1,
             "patches": [
                 {
                     "date": 1741576383120,
                     "content": "Index: \n===================================================================\n--- \n+++ \n"
+                },
+                {
+                    "date": 1741944085567,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -1,6 +1,7 @@\n from typing import Dict, Type, List\n import mcp.types as types\n+import os\n \n # 工具基类\n class BaseTool:\n     \"\"\"所有工具的基类\"\"\"\n@@ -19,8 +20,23 @@\n     \n     async def execute(self, arguments: dict) -> list[types.TextContent | types.ImageContent | types.EmbeddedResource]:\n         \"\"\"执行工具逻辑，需要在子类中实现\"\"\"\n         raise NotImplementedError(\"Tool implementation must override execute method\")\n+    \n+    def process_file_path(self, file_path: str) -> str:\n+        \"\"\"\n+        处理文件路径，支持挂载目录的转换\n+        \n+        如果路径以HOST_MOUNT_SOURCE环境变量开头，则将其转换为容器内的路径\n+        \"\"\"\n+        host_mount_source = os.environ.get('HOST_MOUNT_SOURCE', '')\n+        host_mount_target = os.environ.get('HOST_MOUNT_TARGET', '/host_files')\n+        \n+        # 如果路径以挂载源目录开头，则替换为挂载目标目录\n+        if host_mount_source and file_path.startswith(host_mount_source):\n+            return file_path.replace(host_mount_source, host_mount_target, 1)\n+        \n+        return file_path\n \n \n # 工具注册器\n class ToolRegistry:\n"
                 }
             ],
             "date": 1741576383120,

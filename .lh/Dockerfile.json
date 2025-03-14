@@ -3,7 +3,7 @@
     "activeCommit": 0,
     "commits": [
         {
-            "activePatchIndex": 8,
+            "activePatchIndex": 15,
             "patches": [
                 {
                     "date": 1741245157547,
@@ -40,6 +40,34 @@
                 {
                     "date": 1741529967474,
                     "content": "Index: \n===================================================================\n--- \n+++ \n@@ -20,5 +20,5 @@\n # Expose the port\n EXPOSE 8000\n \n # Run the server with SSE transport\n-CMD [\"python\", \"-m\", \"mcp_simple_tool\", \"--transport\", \"sse\", \"--port\", \"8000\"] \n\\ No newline at end of file\n+CMD [\"python\", \"-m\", \"mcp_tool\", \"--transport\", \"sse\", \"--port\", \"8000\"] \n\\ No newline at end of file\n"
+                },
+                {
+                    "date": 1741668945541,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -3,13 +3,20 @@\n \n # Set working directory\n WORKDIR /app\n \n-# Install build dependencies and curl for healthcheck\n+# Install build dependencies and required packages\n RUN apt-get update && apt-get install -y \\\n     build-essential \\\n     curl \\\n     poppler-utils \\\n+    libgl1-mesa-glx \\\n+    libglib2.0-0 \\\n+    libsm6 \\\n+    libxext6 \\\n+    libxrender-dev \\\n+    libpango-1.0-0 \\\n+    libpangocairo-1.0-0 \\\n     && rm -rf /var/lib/apt/lists/*\n \n # Copy project files\n COPY . .\n"
+                },
+                {
+                    "date": 1741669852360,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -3,20 +3,13 @@\n \n # Set working directory\n WORKDIR /app\n \n-# Install build dependencies and required packages\n+# Install build dependencies and curl for healthcheck\n RUN apt-get update && apt-get install -y \\\n     build-essential \\\n     curl \\\n     poppler-utils \\\n-    libgl1-mesa-glx \\\n-    libglib2.0-0 \\\n-    libsm6 \\\n-    libxext6 \\\n-    libxrender-dev \\\n-    libpango-1.0-0 \\\n-    libpangocairo-1.0-0 \\\n     && rm -rf /var/lib/apt/lists/*\n \n # Copy project files\n COPY . .\n"
+                },
+                {
+                    "date": 1741765604403,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -8,8 +8,9 @@\n RUN apt-get update && apt-get install -y \\\n     build-essential \\\n     curl \\\n     poppler-utils \\\n+    tesseract-ocr \\\n     && rm -rf /var/lib/apt/lists/*\n \n # Copy project files\n COPY . .\n"
+                },
+                {
+                    "date": 1741765639526,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -11,8 +11,13 @@\n     poppler-utils \\\n     tesseract-ocr \\\n     && rm -rf /var/lib/apt/lists/*\n \n+# Configure pip to use Aliyun mirror and increase timeout\n+RUN pip config set global.index-url https://mirrors.aliyun.com/pypi/simple/ \\\n+    && pip config set global.trusted-host mirrors.aliyun.com \\\n+    && pip config set global.timeout 120\n+\n # Copy project files\n COPY . .\n \n # Install the package in editable mode with proper path\n"
+                },
+                {
+                    "date": 1741765649689,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -8,16 +8,10 @@\n RUN apt-get update && apt-get install -y \\\n     build-essential \\\n     curl \\\n     poppler-utils \\\n-    tesseract-ocr \\\n     && rm -rf /var/lib/apt/lists/*\n \n-# Configure pip to use Aliyun mirror and increase timeout\n-RUN pip config set global.index-url https://mirrors.aliyun.com/pypi/simple/ \\\n-    && pip config set global.trusted-host mirrors.aliyun.com \\\n-    && pip config set global.timeout 120\n-\n # Copy project files\n COPY . .\n \n # Install the package in editable mode with proper path\n"
+                },
+                {
+                    "date": 1741766545615,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -7,8 +7,11 @@\n # Install build dependencies and curl for healthcheck\n RUN apt-get update && apt-get install -y \\\n     build-essential \\\n     curl \\\n+    python3-dev \\\n+    libxml2-dev \\\n+    libxslt-dev \\\n     poppler-utils \\\n     && rm -rf /var/lib/apt/lists/*\n \n # Copy project files\n"
+                },
+                {
+                    "date": 1741767018759,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -7,11 +7,8 @@\n # Install build dependencies and curl for healthcheck\n RUN apt-get update && apt-get install -y \\\n     build-essential \\\n     curl \\\n-    python3-dev \\\n-    libxml2-dev \\\n-    libxslt-dev \\\n     poppler-utils \\\n     && rm -rf /var/lib/apt/lists/*\n \n # Copy project files\n"
                 }
             ],
             "date": 1741245157547,
