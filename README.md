@@ -19,7 +19,7 @@
 - **参数**: `file_path` - 文件的本地路径
 - **返回**: 根据文件类型返回相应的处理结果
 
-### 3. PDF文档处理
+### 2. PDF文档处理
 
 使用`pdf`工具可以处理PDF文档，支持两种处理模式：
 
@@ -32,12 +32,8 @@
 - **返回**: 
   - 快速预览模式：文档的文本内容
   - 完整解析模式：文档的文本内容和图片
-- **特点**: 
-  - 使用PyMuPDF提供高质量的文本提取和图像处理
-  - 自动处理大型文件
-  - 支持图片提取和保存
 
-### 4. Word文档解析
+### 3. Word文档解析
 
 使用`word`工具可以解析Word文档，提取文本、表格和图片信息。
 
@@ -47,7 +43,7 @@
 - **返回**: 文档的文本内容、表格和图片信息
 - **特点**: 使用python-docx库提供高质量的文本和表格提取
 
-### 5. Excel文件处理
+### 4. Excel文件处理
 
 使用`excel`工具可以解析Excel文件，提供完整的表格数据和结构信息。
 
@@ -65,7 +61,7 @@
   - 支持多工作表处理
   - 自动处理数据类型转换
 
-### 6. 网页内容获取
+### 5. 网页内容获取
 
 使用`url`工具可以获取任何网页的内容。
 
@@ -76,6 +72,24 @@
   - 完整的HTTP错误处理
   - 超时管理
   - 自动编码处理
+
+### 6. MaxKB AI对话
+
+使用`maxkb`工具可以与MaxKB API进行交互，实现智能对话功能。
+
+- **用法**: `maxkb "您的问题或指令"`
+- **功能**: 发送消息到MaxKB API并获取AI回复
+- **参数**: 
+  - `message` - 要发送的消息内容（必需）
+  - `re_chat` - 是否重新开始对话（可选，默认false）
+  - `stream` - 是否使用流式响应（可选，默认true）
+- **返回**: AI的回复内容
+- **特点**: 
+  - 支持流式响应
+  - 自动重试机制
+  - 完整的错误处理
+  - 60秒超时保护
+  - 保持连接配置优化
 
 ## 技术特点
 
@@ -99,36 +113,6 @@
    - 完整的异常捕获和处理
    - 详细的错误信息反馈
    - 优雅的失败处理机制
-
-## 文档处理技术细节
-
-### PDF处理
-
-1. **多层次处理策略**:
-   - 首先尝试使用PyMuPDF（fitz）提取内容（速度快、准确度高）
-   - 如果失败，回退到PymuPDF4llm（专为大语言模型优化）
-   - 最后尝试PyPDF2作为最终备用方案
-
-2. **性能优化**:
-   - 限制处理的最大页数（完整模式: 30页，快速模式: 50页）
-   - 图片处理优化（DPI调整、大小限制）
-   - 多线程处理加速
-
-3. **错误处理**:
-   - 详细的错误信息和提示
-   - 备用处理方法，确保服务稳定性
-   - 超时保护机制（5分钟超时设置）
-
-### Word文档处理
-
-1. **文档结构解析**:
-   - 提取文档属性（标题、作者、创建时间等）
-   - 段落内容提取，保留原始格式
-   - 表格转换为Markdown格式
-
-2. **图片信息**:
-   - 提供文档中图片的数量信息
-   - 图片引用关系识别
 
 ## 项目结构
 
@@ -212,17 +196,49 @@ class YourTool(BaseTool):
 
 ### 环境变量配置
 
-在开始部署之前，请确保配置以下环境变量：
+在`.env`文件中配置以下环境变量：
 
-1. **MaxKB工具配置**:
-   - `MAXKB_HOST` - MaxKB API的主机地址
-   - `MAXKB_CHAT_ID` - 对话ID
-   - `MAXKB_APPLICATION_ID` - 应用ID
-   - `MAXKB_AUTHORIZATION` - 授权令牌
+```bash
+# Server Configuration
+MCP_SERVER_PORT=8000        # 服务器端口
+MCP_SERVER_HOST=0.0.0.0     # 服务器主机
 
-2. **其他配置**（可选）:
-   - `HTTPCORE_TIMEOUT` - HTTP请求超时时间（默认60秒）
-   - `HTTPX_TIMEOUT` - HTTPX客户端超时时间（默认60秒）
+# MaxKB配置
+MAXKB_HOST=http://host.docker.internal:8080  # MaxKB API主机地址
+MAXKB_CHAT_ID=your_chat_id_here              # MaxKB聊天ID
+MAXKB_APPLICATION_ID=your_application_id_here # MaxKB应用ID
+MAXKB_AUTHORIZATION=your_authorization_key    # MaxKB授权密钥
+
+# 调试模式
+DEBUG=false                 # 是否启用调试模式
+
+# 用户代理
+MCP_USER_AGENT="MCP Test Server (github.com/modelcontextprotocol/python-sdk)"
+
+# 本地目录挂载配置
+HOST_MOUNT_SOURCE=/path/to/your/local/directory  # 本地目录路径
+HOST_MOUNT_TARGET=/host_files                    # 容器内挂载路径
+```
+
+### 本地目录挂载
+
+框架支持将本地目录挂载到容器中，以便工具可以访问本地文件。配置方法：
+
+1. 在`.env`文件中设置`HOST_MOUNT_SOURCE`和`HOST_MOUNT_TARGET`环境变量
+2. `HOST_MOUNT_SOURCE`是你本地机器上的目录路径
+3. `HOST_MOUNT_TARGET`是容器内的挂载路径（默认为`/host_files`）
+
+使用工具时，可以直接引用本地文件路径，框架会自动将其转换为容器内的路径。例如：
+
+```
+# 使用PDF工具处理本地文件
+pdf "/Users/username/Documents/example.pdf"
+
+# 框架会自动将路径转换为容器内路径
+# 例如："/host_files/example.pdf"
+```
+
+这样，你就可以在不修改工具代码的情况下，轻松访问本地文件。
 
 ### Docker部署（推荐）
 
@@ -291,54 +307,6 @@ pip install -r requirements.txt
 ```bash
 python -m mcp_tool
 ```
-
-## 配置说明
-
-### 环境变量配置
-
-在`.env`文件中配置以下环境变量：
-
-```bash
-# Server Configuration
-MCP_SERVER_PORT=8000        # 服务器端口
-MCP_SERVER_HOST=0.0.0.0     # 服务器主机
-
-# MaxKB配置
-MAXKB_HOST=http://host.docker.internal:8080  # MaxKB API主机地址
-MAXKB_CHAT_ID=your_chat_id_here              # MaxKB聊天ID
-MAXKB_APPLICATION_ID=your_application_id_here # MaxKB应用ID
-MAXKB_AUTHORIZATION=your_authorization_key    # MaxKB授权密钥
-
-# 调试模式
-DEBUG=false                 # 是否启用调试模式
-
-# 用户代理
-MCP_USER_AGENT="MCP Test Server (github.com/modelcontextprotocol/python-sdk)"
-
-# 本地目录挂载配置
-HOST_MOUNT_SOURCE=/path/to/your/local/directory  # 本地目录路径
-HOST_MOUNT_TARGET=/host_files                    # 容器内挂载路径
-```
-
-### 本地目录挂载
-
-框架支持将本地目录挂载到容器中，以便工具可以访问本地文件。配置方法：
-
-1. 在`.env`文件中设置`HOST_MOUNT_SOURCE`和`HOST_MOUNT_TARGET`环境变量
-2. `HOST_MOUNT_SOURCE`是你本地机器上的目录路径
-3. `HOST_MOUNT_TARGET`是容器内的挂载路径（默认为`/host_files`）
-
-使用工具时，可以直接引用本地文件路径，框架会自动将其转换为容器内的路径。例如：
-
-```
-# 使用PDF工具处理本地文件
-pdf "/Users/username/Documents/example.pdf"
-
-# 框架会自动将路径转换为容器内路径
-# 例如："/host_files/example.pdf"
-```
-
-这样，你就可以在不修改工具代码的情况下，轻松访问本地文件。
 
 ## 依赖项
 
