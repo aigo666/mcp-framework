@@ -3,7 +3,7 @@
     "activeCommit": 0,
     "commits": [
         {
-            "activePatchIndex": 29,
+            "activePatchIndex": 30,
             "patches": [
                 {
                     "date": 1741245187085,
@@ -124,6 +124,10 @@
                 {
                     "date": 1741944179267,
                     "content": "Index: \n===================================================================\n--- \n+++ \n@@ -309,19 +309,56 @@\n ```bash\n python -m mcp_tool\n ```\n \n-## 配置\n+## 配置说明\n \n-### 环境变量\n+### 环境变量配置\n \n-在`.env`文件中配置：\n+在`.env`文件中配置以下环境变量：\n \n-- `MCP_SERVER_PORT`: 服务器端口（默认: 8000）\n-- `MCP_SERVER_HOST`: 绑定地址（默认: 0.0.0.0）\n-- `DEBUG`: 调试模式（默认: false）\n-- `MCP_USER_AGENT`: 自定义User-Agent\n+```bash\n+# Server Configuration\n+MCP_SERVER_PORT=8000        # 服务器端口\n+MCP_SERVER_HOST=0.0.0.0     # 服务器主机\n \n+# MaxKB配置\n+MAXKB_HOST=http://host.docker.internal:8080  # MaxKB API主机地址\n+MAXKB_CHAT_ID=your_chat_id_here              # MaxKB聊天ID\n+MAXKB_APPLICATION_ID=your_application_id_here # MaxKB应用ID\n+MAXKB_AUTHORIZATION=your_authorization_key    # MaxKB授权密钥\n+\n+# 调试模式\n+DEBUG=false                 # 是否启用调试模式\n+\n+# 用户代理\n+MCP_USER_AGENT=\"MCP Test Server (github.com/modelcontextprotocol/python-sdk)\"\n+\n+# 本地目录挂载配置\n+HOST_MOUNT_SOURCE=/path/to/your/local/directory  # 本地目录路径\n+HOST_MOUNT_TARGET=/host_files                    # 容器内挂载路径\n+```\n+\n+### 本地目录挂载\n+\n+框架支持将本地目录挂载到容器中，以便工具可以访问本地文件。配置方法：\n+\n+1. 在`.env`文件中设置`HOST_MOUNT_SOURCE`和`HOST_MOUNT_TARGET`环境变量\n+2. `HOST_MOUNT_SOURCE`是你本地机器上的目录路径\n+3. `HOST_MOUNT_TARGET`是容器内的挂载路径（默认为`/host_files`）\n+\n+使用工具时，可以直接引用本地文件路径，框架会自动将其转换为容器内的路径。例如：\n+\n+```\n+# 使用PDF工具处理本地文件\n+pdf \"/Users/username/Documents/example.pdf\"\n+\n+# 框架会自动将路径转换为容器内路径\n+# 例如：\"/host_files/example.pdf\"\n+```\n+\n+这样，你就可以在不修改工具代码的情况下，轻松访问本地文件。\n+\n ## 依赖项\n \n 主要依赖：\n - `mcp`: Model Context Protocol实现\n"
+                },
+                {
+                    "date": 1741945369162,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -6,28 +6,10 @@\n ## 主要功能\n \n 本框架提供了以下核心功能：\n \n-### 1. MaxKB AI对话\n+### 1. 综合文件处理\n \n-使用`maxkb`工具可以与MaxKB API进行交互，实现智能对话功能。\n-\n-- **用法**: `maxkb \"您的问题或指令\"`\n-- **功能**: 发送消息到MaxKB API并获取AI回复\n-- **参数**: \n-  - `message` - 要发送的消息内容（必需）\n-  - `re_chat` - 是否重新开始对话（可选，默认false）\n-  - `stream` - 是否使用流式响应（可选，默认true）\n-- **返回**: AI的回复内容\n-- **特点**: \n-  - 支持流式响应\n-  - 自动重试机制\n-  - 完整的错误处理\n-  - 60秒超时保护\n-  - 保持连接配置优化\n-\n-### 2. 综合文件处理\n-\n 使用`file`工具可以自动识别文件类型并选择合适的处理方式，支持PDF、Word和Excel文件。\n \n - **用法**: `file /path/to/document`\n - **支持格式**: \n"
                 }
             ],
             "date": 1741245187085,
