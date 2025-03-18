@@ -10,6 +10,7 @@ from . import BaseTool, ToolRegistry
 from .pdf_tool import PdfTool
 from .word_tool import WordTool
 from .excel_tool import ExcelTool
+from .csv_tool import CsvTool
 
 @ToolRegistry.register
 class FileTool(BaseTool):
@@ -19,10 +20,11 @@ class FileTool(BaseTool):
     - PDF文件 (.pdf)
     - Word文档 (.doc, .docx)
     - Excel文件 (.xls, .xlsx, .xlsm)
+    - CSV文件 (.csv)
     """
     
     name = "file"
-    description = "解析文件内容，支持PDF、Word和Excel格式"
+    description = "解析文件内容，支持PDF、Word、Excel和CSV格式"
     input_schema = {
         "type": "object",
         "required": ["file_path"],
@@ -40,6 +42,7 @@ class FileTool(BaseTool):
         self.pdf_tool = PdfTool()
         self.word_tool = WordTool()
         self.excel_tool = ExcelTool()
+        self.csv_tool = CsvTool()
     
     async def execute(self, arguments: Dict[str, Any]) -> List[types.TextContent | types.ImageContent | types.EmbeddedResource]:
         """
@@ -78,6 +81,8 @@ class FileTool(BaseTool):
                 return await self.word_tool.execute(arguments)
             elif file_ext in ['.xls', '.xlsx', '.xlsm']:
                 return await self.excel_tool.execute(arguments)
+            elif file_ext == '.csv':
+                return await self.csv_tool.execute(arguments)
             else:
                 return [types.TextContent(
                     type="text",

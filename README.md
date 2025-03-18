@@ -1,7 +1,7 @@
 # MCP开发框架
 [![smithery badge](https://smithery.ai/badge/@aigo666/mcp-framework)](https://smithery.ai/server/@aigo666/mcp-framework)
 
-一个强大的MCP（Model Context Protocol）开发框架，用于创建与大语言模型交互的自定义工具。该框架提供了一套完整的工具集，可以轻松地扩展Cursor IDE的功能，实现网页内容获取、文件处理（PDF、Word、Excel）以及AI对话等高级功能。
+一个强大的MCP（Model Context Protocol）开发框架，用于创建与大语言模型交互的自定义工具。该框架提供了一套完整的工具集，可以轻松地扩展Cursor IDE的功能，实现网页内容获取、文件处理（PDF、Word、Excel、CSV）以及AI对话等高级功能。
 
 ## 主要功能
 
@@ -9,13 +9,14 @@
 
 ### 1. 综合文件处理
 
-使用`file`工具可以自动识别文件类型并选择合适的处理方式，支持PDF、Word和Excel文件。
+使用`file`工具可以自动识别文件类型并选择合适的处理方式，支持PDF、Word、Excel和CSV文件。
 
 - **用法**: `file /path/to/document`
 - **支持格式**: 
   - PDF文件 (.pdf)
   - Word文档 (.doc, .docx)
   - Excel文件 (.xls, .xlsx, .xlsm)
+  - CSV文件 (.csv)
 - **参数**: `file_path` - 文件的本地路径
 - **返回**: 根据文件类型返回相应的处理结果
 
@@ -61,7 +62,27 @@
   - 支持多工作表处理
   - 自动处理数据类型转换
 
-### 5. 网页内容获取
+### 5. CSV文件处理
+
+使用`csv`工具可以解析CSV文件，提供完整的数据分析和预览功能。
+
+- **用法**: `csv /path/to/data.csv`
+- **功能**: 解析CSV文件并提供数据分析
+- **参数**: 
+  - `file_path` - CSV文件的本地路径
+  - `encoding` - 文件编码格式（可选，默认自动检测）
+- **返回**: 
+  - 文件基本信息（文件名、行数、列数）
+  - 列名列表
+  - 数据预览（前5行）
+  - 描述性统计信息
+- **特点**: 
+  - 自动编码检测
+  - 支持多种编码格式（UTF-8、GBK等）
+  - 提供数据统计分析
+  - 智能数据类型处理
+
+### 6. 网页内容获取
 
 使用`url`工具可以获取任何网页的内容。
 
@@ -73,7 +94,7 @@
   - 超时管理
   - 自动编码处理
 
-### 6. MaxKB AI对话
+### 7. MaxKB AI对话
 
 使用`maxkb`工具可以与MaxKB API进行交互，实现智能对话功能。
 

@@ -3,7 +3,7 @@
     "activeCommit": 0,
     "commits": [
         {
-            "activePatchIndex": 20,
+            "activePatchIndex": 21,
             "patches": [
                 {
                     "date": 1741245105746,
@@ -88,6 +88,10 @@
                 {
                     "date": 1741767018758,
                     "content": "Index: \n===================================================================\n--- \n+++ \n@@ -1,8 +1,8 @@\n [project]\n name = \"mcp-simple-tool\"\n version = \"0.1.0\"\n-description = \"A simple MCP server exposing a website fetching tool\"\n+description = \"MCP工具集合，包含文件处理和网页获取功能\"\n readme = \"README.md\"\n requires-python = \">=3.10\"\n authors = [{ name = \"aigo666\" }]\n keywords = [\"mcp\", \"llm\", \"automation\", \"web\", \"fetch\", \"pdf\", \"word\", \"excel\"]\n"
+                },
+                {
+                    "date": 1742295692409,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -4,9 +4,9 @@\n description = \"MCP工具集合，包含文件处理和网页获取功能\"\n readme = \"README.md\"\n requires-python = \">=3.10\"\n authors = [{ name = \"aigo666\" }]\n-keywords = [\"mcp\", \"llm\", \"automation\", \"web\", \"fetch\", \"pdf\", \"word\", \"excel\"]\n+keywords = [\"mcp\", \"llm\", \"automation\", \"web\", \"fetch\", \"pdf\", \"word\", \"excel\", \"csv\"]\n license = { text = \"MIT\" }\n classifiers = [\n     \"Development Status :: 4 - Beta\",\n     \"Intended Audience :: Developers\",\n@@ -27,8 +27,9 @@\n     \"python-docx>=0.8.11\",\n     \"pandas>=2.0.0\",\n     \"openpyxl>=3.1.0\",\n     \"pytesseract>=0.3.10\",\n+    \"chardet>=5.0.0\",\n ]\n \n [project.scripts]\n mcp-simple-tool = \"mcp_tool.server:main\"\n"
                 }
             ],
             "date": 1741245105746,
