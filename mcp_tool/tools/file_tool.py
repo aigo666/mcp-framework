@@ -1,3 +1,11 @@
+'''
+Author: 刘彦志 lyzgithub@163.com
+Date: 2025-03-11 11:25:58
+LastEditors: 刘彦志 lyzgithub@163.com
+LastEditTime: 2025-04-01 17:54:16
+FilePath: /mcp-framework/mcp_tool/tools/file_tool.py
+Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
+'''
 """
 综合文件处理工具，根据文件类型自动选择合适的处理方式
 """
@@ -11,6 +19,7 @@ from .pdf_tool import PdfTool
 from .word_tool import WordTool
 from .excel_tool import ExcelTool
 from .csv_tool import CsvTool
+from .markdown_tool import MarkdownTool
 
 @ToolRegistry.register
 class FileTool(BaseTool):
@@ -21,10 +30,11 @@ class FileTool(BaseTool):
     - Word文档 (.doc, .docx)
     - Excel文件 (.xls, .xlsx, .xlsm)
     - CSV文件 (.csv)
+    - Markdown文件 (.md)
     """
     
     name = "file"
-    description = "解析文件内容，支持PDF、Word、Excel和CSV格式"
+    description = "解析文件内容，支持PDF、Word、Excel、CSV和Markdown格式"
     input_schema = {
         "type": "object",
         "required": ["file_path"],
@@ -43,6 +53,7 @@ class FileTool(BaseTool):
         self.word_tool = WordTool()
         self.excel_tool = ExcelTool()
         self.csv_tool = CsvTool()
+        self.markdown_tool = MarkdownTool()
     
     async def execute(self, arguments: Dict[str, Any]) -> List[types.TextContent | types.ImageContent | types.EmbeddedResource]:
         """
@@ -83,6 +94,8 @@ class FileTool(BaseTool):
                 return await self.excel_tool.execute(arguments)
             elif file_ext == '.csv':
                 return await self.csv_tool.execute(arguments)
+            elif file_ext == '.md':
+                return await self.markdown_tool.execute(arguments)
             else:
                 return [types.TextContent(
                     type="text",

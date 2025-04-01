@@ -1,7 +1,7 @@
 # MCP开发框架
 [![smithery badge](https://smithery.ai/badge/@aigo666/mcp-framework)](https://smithery.ai/server/@aigo666/mcp-framework)
 
-一个强大的MCP（Model Context Protocol）开发框架，用于创建与大语言模型交互的自定义工具。该框架提供了一套完整的工具集，可以轻松地扩展Cursor IDE的功能，实现网页内容获取、文件处理（PDF、Word、Excel、CSV）以及AI对话等高级功能。
+一个强大的MCP（Model Context Protocol）开发框架，用于创建与大语言模型交互的自定义工具。该框架提供了一套完整的工具集，可以轻松地扩展Cursor IDE的功能，实现网页内容获取、文件处理（PDF、Word、Excel、CSV、Markdown）以及AI对话等高级功能。
 
 ## 主要功能
 
@@ -9,7 +9,7 @@
 
 ### 1. 综合文件处理
 
-使用`file`工具可以自动识别文件类型并选择合适的处理方式，支持PDF、Word、Excel和CSV文件。
+使用`file`工具可以自动识别文件类型并选择合适的处理方式，支持PDF、Word、Excel、CSV和Markdown文件。
 
 - **用法**: `file /path/to/document`
 - **支持格式**: 
@@ -17,6 +17,7 @@
   - Word文档 (.doc, .docx)
   - Excel文件 (.xls, .xlsx, .xlsm)
   - CSV文件 (.csv)
+  - Markdown文件 (.md)
 - **参数**: `file_path` - 文件的本地路径
 - **返回**: 根据文件类型返回相应的处理结果
 
@@ -82,7 +83,24 @@
   - 提供数据统计分析
   - 智能数据类型处理
 
-### 6. 网页内容获取
+### 6. Markdown文件解析
+
+使用`markdown`工具可以解析Markdown文件，提取文本内容、标题结构和列表等信息。
+
+- **用法**: `markdown /path/to/document.md`
+- **功能**: 解析Markdown文件并提取标题结构、列表和文本内容
+- **参数**: `file_path` - Markdown文件的本地路径
+- **返回**: 
+  - 文件基本信息（文件名、大小、修改时间等）
+  - 标题结构层级展示
+  - 内容元素统计（代码块、列表、链接、图片、表格等）
+  - 原始Markdown内容
+- **特点**: 
+  - 自动识别各级标题和结构
+  - 智能统计内容元素
+  - 完整的标题层级展示
+
+### 7. 网页内容获取
 
 使用`url`工具可以获取任何网页的内容。
 
@@ -94,7 +112,7 @@
   - 超时管理
   - 自动编码处理
 
-### 7. MaxKB AI对话
+### 8. MaxKB AI对话
 
 使用`maxkb`工具可以与MaxKB API进行交互，实现智能对话功能。
 
@@ -148,7 +166,10 @@ mcp_tool/
 │   ├── pdf_tool.py        # PDF解析工具
 │   ├── word_tool.py       # Word文档解析工具
 │   ├── excel_tool.py      # Excel文件处理工具
-│   └── url_tool.py        # URL工具实现
+│   ├── csv_tool.py        # CSV文件处理工具
+│   ├── markdown_tool.py   # Markdown文件解析工具
+│   ├── url_tool.py        # URL工具实现
+│   └── maxkb_tool.py      # MaxKB AI对话工具
 ├── __init__.py
 ├── __main__.py
 └── server.py              # MCP服务器实现
