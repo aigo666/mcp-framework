@@ -15,7 +15,7 @@ class WordTool(BaseTool):
     用于解析Word文档的工具，提取文本内容、表格和图片信息
     """
     
-    name = "word"
+    name = "parse_word"
     description = "解析Word文档内容，提取文本、表格和图片信息"
     input_schema = {
         "type": "object",

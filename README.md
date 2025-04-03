@@ -9,9 +9,9 @@
 
 ### 1. 综合文件处理
 
-使用`file`工具可以自动识别文件类型并选择合适的处理方式，支持PDF、Word、Excel、CSV和Markdown文件。
+使用`parse_file`工具可以自动识别文件类型并选择合适的处理方式，支持PDF、Word、Excel、CSV和Markdown文件。
 
-- **用法**: `file /path/to/document`
+- **用法**: `parse_file /path/to/document`
 - **支持格式**: 
   - PDF文件 (.pdf)
   - Word文档 (.doc, .docx)
@@ -23,9 +23,9 @@
 
 ### 2. PDF文档处理
 
-使用`pdf`工具可以处理PDF文档，支持两种处理模式：
+使用`parse_pdf`工具可以处理PDF文档，支持两种处理模式：
 
-- **用法**: `pdf /path/to/document.pdf [mode]`
+- **用法**: `parse_pdf /path/to/document.pdf [mode]`
 - **参数**: 
   - `file_path` - PDF文件的本地路径
   - `mode` - 处理模式（可选）：
@@ -37,9 +37,9 @@
 
 ### 3. Word文档解析
 
-使用`word`工具可以解析Word文档，提取文本、表格和图片信息。
+使用`parse_word`工具可以解析Word文档，提取文本、表格和图片信息。
 
-- **用法**: `word /path/to/document.docx`
+- **用法**: `parse_word /path/to/document.docx`
 - **功能**: 解析Word文档并提取文本内容、表格和图片信息
 - **参数**: `file_path` - Word文档的本地路径
 - **返回**: 文档的文本内容、表格和图片信息
@@ -47,9 +47,9 @@
 
 ### 4. Excel文件处理
 
-使用`excel`工具可以解析Excel文件，提供完整的表格数据和结构信息。
+使用`parse_excel`工具可以解析Excel文件，提供完整的表格数据和结构信息。
 
-- **用法**: `excel /path/to/spreadsheet.xlsx`
+- **用法**: `parse_excel /path/to/spreadsheet.xlsx`
 - **功能**: 解析Excel文件的所有工作表
 - **参数**: `file_path` - Excel文件的本地路径
 - **返回**: 
@@ -65,9 +65,9 @@
 
 ### 5. CSV文件处理
 
-使用`csv`工具可以解析CSV文件，提供完整的数据分析和预览功能。
+使用`parse_csv`工具可以解析CSV文件，提供完整的数据分析和预览功能。
 
-- **用法**: `csv /path/to/data.csv`
+- **用法**: `parse_csv /path/to/data.csv`
 - **功能**: 解析CSV文件并提供数据分析
 - **参数**: 
   - `file_path` - CSV文件的本地路径
@@ -85,9 +85,9 @@
 
 ### 6. Markdown文件解析
 
-使用`markdown`工具可以解析Markdown文件，提取文本内容、标题结构和列表等信息。
+使用`parse_markdown`工具可以解析Markdown文件，提取文本内容、标题结构和列表等信息。
 
-- **用法**: `markdown /path/to/document.md`
+- **用法**: `parse_markdown /path/to/document.md`
 - **功能**: 解析Markdown文件并提取标题结构、列表和文本内容
 - **参数**: `file_path` - Markdown文件的本地路径
 - **返回**: 

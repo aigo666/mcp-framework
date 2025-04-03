@@ -15,7 +15,7 @@ class CsvTool(BaseTool):
     CSV文件处理工具，用于解析CSV文件内容
     """
     
-    name = "csv"
+    name = "parse_csv"
     description = "解析CSV文件内容，支持各种编码格式"
     input_schema = {
         "type": "object",

@@ -26,7 +26,7 @@ class PdfTool(BaseTool):
     2. 完整解析模式：提取文本和图片内容，提供更详细的文档分析
     """
     
-    name = "pdf"
+    name = "parse_pdf"
     description = "解析PDF文件内容，支持快速预览和完整解析两种模式"
     input_schema = {
         "type": "object",

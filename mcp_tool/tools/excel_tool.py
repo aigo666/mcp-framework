@@ -7,7 +7,7 @@ from . import BaseTool, ToolRegistry
 @ToolRegistry.register
 class ExcelTool(BaseTool):
     """Excel解析工具，用于解析Excel文件内容"""
-    name = "excel"
+    name = "parse_excel"
     description = "Parses an Excel file and returns its content including all sheets"
     input_schema = {
         "type": "object",

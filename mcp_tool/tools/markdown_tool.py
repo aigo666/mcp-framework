@@ -14,7 +14,7 @@ class MarkdownTool(BaseTool):
     用于解析Markdown文件的工具，提取文本内容、标题结构和列表等信息
     """
     
-    name = "markdown"
+    name = "parse_markdown"
     description = "解析Markdown文件内容，提取标题结构、列表和文本内容"
     input_schema = {
         "type": "object",

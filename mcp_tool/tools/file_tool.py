@@ -33,7 +33,7 @@ class FileTool(BaseTool):
     - Markdown文件 (.md)
     """
     
-    name = "file"
+    name = "parse_file"
     description = "解析文件内容，支持PDF、Word、Excel、CSV和Markdown格式"
     input_schema = {
         "type": "object",
