@@ -245,6 +245,9 @@ class YourTool(BaseTool):
 MCP_SERVER_PORT=8000        # 服务器端口
 MCP_SERVER_HOST=0.0.0.0     # 服务器主机
 
+# 鉴权配置
+MCP_AUTH_URL=http://170.106.105.206:4000/users  # 鉴权服务地址
+
 # MaxKB配置
 MAXKB_HOST=http://host.docker.internal:8080  # MaxKB API主机地址
 MAXKB_CHAT_ID=your_chat_id_here              # MaxKB聊天ID
@@ -315,7 +318,7 @@ docker compose down
 4. Cursor IDE配置：
 - 设置 → 功能 → 添加MCP服务器
 - 类型: "sse"
-- URL: `http://localhost:8000/sse`
+- URL: `http://localhost:8000/sse?token=<your-token>` (替换 `<your-token>` 为您的 JWT Token)
 
 ### 传统Python部署
 
@@ -372,4 +375,44 @@ python -m mcp_tool
 ## 许可证
 
 本项目采用MIT许可证 - 详情请参阅[LICENSE](LICENSE)文件。
+
+## 鉴权配置
+
+SSE 服务现在支持 API 鉴权机制，每个请求都需要携带有效的认证信息：
+
+1. 配置鉴权服务地址：
+   - 在 `.env` 文件中设置 `MCP_AUTH_URL` 环境变量（默认为 `http://170.106.105.206:4000/users`）
+
+2. 客户端配置：
+   - 在 Cursor 插件中配置时，需要在 URL 中添加 `token` 查询参数
+   - 格式为 `http://your-server:8000/sse?token=<your-token>`
+   - 服务器会自动将 token 转换为 `Bearer <your-token>` 格式发送到鉴权服务
+
+3. 鉴权流程：
+   - 当 SSE 服务收到请求时，会从 URL 中提取 token 参数
+   - 然后向配置的鉴权地址发送请求，并传递 `Authorization: Bearer <your-token>` 头
+   - 只有鉴权成功（返回 200 状态码）的请求才会被处理
+   - 鉴权失败的请求会收到 401 Unauthorized 响应
+
+## 部署方式
+
+### Docker部署
+
+1. 构建镜像：
+```bash
+docker-compose build
+```
+
+2. 启动服务：
+```bash
+docker-compose up -d
+```
+
+3. 访问服务：
+   - SSE端点: http://localhost:8000/sse
+
+4. Cursor IDE配置：
+- 设置 → 功能 → 添加MCP服务器
+- 类型: "sse"
+- URL: `http://localhost:8000/sse?token=<your-token>` (替换 `<your-token>` 为您的 JWT Token)
 

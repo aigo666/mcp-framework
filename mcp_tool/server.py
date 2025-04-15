@@ -2,6 +2,10 @@ import anyio
 import click
 import mcp.types as types
 from mcp.server.lowlevel import Server
+import os
+import httpx
+from starlette.responses import JSONResponse
+from urllib.parse import parse_qs
 
 # 导入工具注册器和工具加载器
 from .tools import ToolRegistry
@@ -61,7 +65,45 @@ def main(port: int, transport: str) -> int:
 
         sse = SseServerTransport("/messages/")
 
+        # 鉴权函数
+        async def verify_auth(request):
+            """验证请求的鉴权信息"""
+            # 获取鉴权地址，默认为 http://170.106.105.206:4000/users
+            auth_url = os.environ.get("MCP_AUTH_URL", "http://170.106.105.206:4000/users")
+            
+            # 从URL查询参数中获取token
+            query_params = parse_qs(request.scope.get("query_string", b"").decode())
+            token = query_params.get("token", [None])[0]
+            
+            if not token:
+                return False, "Token parameter is missing in URL"
+            
+            try:
+                # 构建Authorization头
+                auth_header = f"Bearer {token}"
+                
+                # 发送请求到鉴权服务
+                async with httpx.AsyncClient() as client:
+                    headers = {"Authorization": auth_header}
+                    response = await client.get(auth_url, headers=headers, timeout=10.0)
+                    
+                    # 检查响应状态码
+                    if response.status_code == 200:
+                        return True, "Authentication successful"
+                    else:
+                        return False, f"Authentication failed with status code: {response.status_code}"
+            except Exception as e:
+                return False, f"Authentication error: {str(e)}"
+
         async def handle_sse(request):
+            # 验证鉴权
+            is_authenticated, message = await verify_auth(request)
+            if not is_authenticated:
+                return JSONResponse(
+                    status_code=401,
+                    content={"error": "Unauthorized", "message": message}
+                )
+            
             # 增加超时时间，以便处理大型文件
             request.scope["timeout"] = 300  # 设置为5分钟
             async with sse.connect_sse(
