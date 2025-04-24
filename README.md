@@ -1,7 +1,7 @@
 # MCP开发框架
 [![smithery badge](https://smithery.ai/badge/@aigo666/mcp-framework)](https://smithery.ai/server/@aigo666/mcp-framework)
 
-一个强大的MCP（Model Context Protocol）开发框架，用于创建与大语言模型交互的自定义工具。该框架提供了一套完整的工具集，可以轻松地扩展Cursor IDE的功能，实现网页内容获取、文件处理（PDF、Word、Excel、CSV、Markdown）以及AI对话等高级功能。
+一个强大的MCP（Model Context Protocol）开发框架，用于创建与大语言模型交互的自定义工具。该框架提供了一套完整的工具集，可以轻松地扩展Cursor IDE的功能，实现网页内容获取、文件处理（PDF、Word、Excel、CSV、Markdown）以及AI对话等高级功能。它具有强大的MCP工具扩展能力，使开发者能够快速构建和集成各种自定义工具。
 
 ## 主要功能
 
@@ -143,12 +143,18 @@
    - Word处理：精确提取文本、表格和图片
    - Excel处理：高效处理大型表格数据
 
-3. **内存优化**
+3. **强大的MCP工具扩展能力**
+   - 插件化架构设计，易于扩展
+   - 统一的工具注册和调用接口
+   - 支持同步和异步工具开发
+   - 丰富的工具开发API和辅助函数
+
+4. **内存优化**
    - 使用临时文件管理大型文件
    - 自动清理临时资源
    - 分块处理大型文档
 
-4. **错误处理**
+5. **错误处理**
    - 完整的异常捕获和处理
    - 详细的错误信息反馈
    - 优雅的失败处理机制
@@ -393,6 +399,12 @@ SSE 服务现在支持 API 鉴权机制，每个请求都需要携带有效的�
    - 然后向配置的鉴权地址发送请求，并传递 `Authorization: Bearer <your-token>` 头
    - 只有鉴权成功（返回 200 状态码）的请求才会被处理
    - 鉴权失败的请求会收到 401 Unauthorized 响应
+
+4. 推荐JWT鉴权服务：
+   - 我们推荐使用Jason Watmore的Node.js JWT鉴权服务作为参考实现
+   - 详细文档和示例代码：https://jasonwatmore.com/nodejs-jwt-authentication-tutorial-with-example-api
+   - 该实现提供了完整的用户注册、登录、令牌生成和验证功能
+   - 可以无缝集成到本框架的鉴权流程中
 
 ## 部署方式
 
