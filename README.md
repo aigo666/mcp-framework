@@ -5,6 +5,9 @@
 
 ## 主要功能
 
+<details>
+<summary>点击展开查看框架提供的核心功能</summary>
+
 本框架提供了以下核心功能：
 
 ### 1. 综合文件处理
@@ -129,6 +132,8 @@
   - 完整的错误处理
   - 60秒超时保护
   - 保持连接配置优化
+
+</details>
 
 ## 技术特点
 
@@ -326,6 +331,37 @@ docker compose down
 - 类型: "sse"
 - URL: `http://localhost:8000/sse?token=<your-token>` (替换 `<your-token>` 为您的 JWT Token)
 
+## 鉴权配置
+
+<details>
+<summary>点击展开查看详细的鉴权配置信息</summary>
+
+SSE 服务现在支持 API 鉴权机制，每个请求都需要携带有效的认证信息：
+
+1. 配置鉴权服务地址：
+   - 在 `.env` 文件中设置 `MCP_AUTH_URL` 环境变量（默认为 `http://170.106.105.206:4000/users`）
+
+2. 客户端配置：
+   - 在 Cursor 插件中配置时，需要在 URL 中添加 `token` 查询参数
+   - 格式为 `http://your-server:8000/sse?token=<your-token>`
+   - 服务器会自动将 token 转换为 `Bearer <your-token>` 格式发送到鉴权服务
+
+3. 鉴权流程：
+   - 当 SSE 服务收到请求时，会从 URL 中提取 token 参数
+   - 然后向配置的鉴权地址发送请求，并传递 `Authorization: Bearer <your-token>` 头
+   - 只有鉴权成功（返回 200 状态码）的请求才会被处理
+   - 鉴权失败的请求会收到 401 Unauthorized 响应
+
+4. 推荐JWT鉴权服务：
+   - 我们推荐使用Jason Watmore的Node.js JWT鉴权服务作为参考实现
+   - 详细文档和示例代码：https://jasonwatmore.com/nodejs-jwt-authentication-tutorial-with-example-api
+   - 该实现提供了完整的用户注册、登录、令牌生成和验证功能
+   - 可以无缝集成到本框架的鉴权流程中
+
+</details>
+
+## 部署方式
+
 ### 传统Python部署
 
 1. 安装系统依赖：
@@ -381,50 +417,3 @@ python -m mcp_tool
 ## 许可证
 
 本项目采用MIT许可证 - 详情请参阅[LICENSE](LICENSE)文件。
-
-## 鉴权配置
-
-SSE 服务现在支持 API 鉴权机制，每个请求都需要携带有效的认证信息：
-
-1. 配置鉴权服务地址：
-   - 在 `.env` 文件中设置 `MCP_AUTH_URL` 环境变量（默认为 `http://170.106.105.206:4000/users`）
-
-2. 客户端配置：
-   - 在 Cursor 插件中配置时，需要在 URL 中添加 `token` 查询参数
-   - 格式为 `http://your-server:8000/sse?token=<your-token>`
-   - 服务器会自动将 token 转换为 `Bearer <your-token>` 格式发送到鉴权服务
-
-3. 鉴权流程：
-   - 当 SSE 服务收到请求时，会从 URL 中提取 token 参数
-   - 然后向配置的鉴权地址发送请求，并传递 `Authorization: Bearer <your-token>` 头
-   - 只有鉴权成功（返回 200 状态码）的请求才会被处理
-   - 鉴权失败的请求会收到 401 Unauthorized 响应
-
-4. 推荐JWT鉴权服务：
-   - 我们推荐使用Jason Watmore的Node.js JWT鉴权服务作为参考实现
-   - 详细文档和示例代码：https://jasonwatmore.com/nodejs-jwt-authentication-tutorial-with-example-api
-   - 该实现提供了完整的用户注册、登录、令牌生成和验证功能
-   - 可以无缝集成到本框架的鉴权流程中
-
-## 部署方式
-
-### Docker部署
-
-1. 构建镜像：
-```bash
-docker-compose build
-```
-
-2. 启动服务：
-```bash
-docker-compose up -d
-```
-
-3. 访问服务：
-   - SSE端点: http://localhost:8000/sse
-
-4. Cursor IDE配置：
-- 设置 → 功能 → 添加MCP服务器
-- 类型: "sse"
-- URL: `http://localhost:8000/sse?token=<your-token>` (替换 `<your-token>` 为您的 JWT Token)
-
