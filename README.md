@@ -1,5 +1,6 @@
 # MCP开发框架
 [![smithery badge](https://smithery.ai/badge/@aigo666/mcp-framework)](https://smithery.ai/server/@aigo666/mcp-framework)
+[![glama badge](https://glama.ai/mcp/servers/@aigo666/mcp-framework/badge)](https://glama.ai/mcp/servers/@aigo666/mcp-framework)
 
 <a href="https://glama.ai/mcp/servers/@aigo666/mcp-framework">
 <img width="380" height="200" src="https://glama.ai/mcp/servers/@aigo666/mcp-framework/badge" />
