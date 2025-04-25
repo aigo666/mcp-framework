@@ -129,6 +129,12 @@ class PdfTool(BaseTool):
         if image_type:
             return f"image/{image_type}"
         return "image/png"  # 默认返回PNG类型
+    
+    def _encode_image_base64(self, image_bytes: bytes) -> str:
+        """
+        将图片编码为base64格式
+        """
+        return base64.b64encode(image_bytes).decode('utf-8')
 
     async def _analyze_image(self, image_bytes: bytes, lang: str = 'chi_sim+eng') -> str:
         """
@@ -185,7 +191,7 @@ class PdfTool(BaseTool):
                         text=f"第{page_num + 1}页:\n{text}\n---"
                     ))
                 
-                # 提取图片并进行OCR识别
+                # 提取图片
                 image_list = page.get_images()
                 if image_list:
                     results.append(types.TextContent(
@@ -199,14 +205,24 @@ class PdfTool(BaseTool):
                             base_image = doc.extract_image(xref)
                             image_bytes = base_image["image"]
                             
-                            # 分析图片内容
-                            image_analysis = await self._analyze_image(image_bytes)
+                            # 获取图片MIME类型
+                            mime_type = self._get_image_mime_type(image_bytes)
                             
-                            # 只添加OCR识别结果
+                            # 添加图片OCR识别结果
+                            image_analysis = await self._analyze_image(image_bytes)
                             results.append(types.TextContent(
                                 type="text",
                                 text=f"第{page_num + 1}页 图片{img_idx + 1}分析结果：\n{image_analysis}\n---"
                             ))
+                            
+                            # 添加图片内容，直接返回图片而非只返回OCR文本
+                            image_base64 = self._encode_image_base64(image_bytes)
+                            results.append(types.ImageContent(
+                                type="image",
+                                data=image_base64,
+                                mimeType=mime_type
+                            ))
+                            
                         except Exception as img_error:
                             results.append(types.TextContent(
                                 type="text",

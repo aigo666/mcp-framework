@@ -3,6 +3,7 @@ version: '3.8'
 services:
   mcp-server:
     build: .
+    container_name: mcp-framework-server
     ports:
       - "${MCP_SERVER_PORT:-8000}:8000"
     environment:
@@ -17,8 +18,8 @@ services:
       - MAXKB_APPLICATION_ID=${MAXKB_APPLICATION_ID}
       - MAXKB_AUTHORIZATION=${MAXKB_AUTHORIZATION}
       # 挂载目录配置
-      - HOST_MOUNT_SOURCE=${HOST_MOUNT_SOURCE}
-      - HOST_MOUNT_TARGET=${HOST_MOUNT_TARGET}
+      - HOST_MOUNT_SOURCE=${HOST_MOUNT_SOURCE:-/tmp}
+      - HOST_MOUNT_TARGET=${HOST_MOUNT_TARGET:-/host_files}
     volumes:
       # 挂载用户的本地目录到容器内的指定目录
       - ${HOST_MOUNT_SOURCE:-/tmp}:${HOST_MOUNT_TARGET:-/host_files}

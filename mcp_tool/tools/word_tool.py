@@ -4,8 +4,14 @@ Word文档解析工具，用于解析Word文档内容
 
 import os
 import traceback
-from typing import Dict, List, Any
+import io
+import base64
+import imghdr
+from typing import Dict, List, Any, Tuple
 import docx
+from docx.document import Document
+from docx.parts.document import DocumentPart
+from docx.package import Package
 import mcp.types as types
 from . import BaseTool, ToolRegistry
 
@@ -48,6 +54,47 @@ class WordTool(BaseTool):
         file_path = self.process_file_path(arguments["file_path"])
         
         return await self._parse_word_document(file_path)
+    
+    def _get_image_mime_type(self, image_bytes: bytes) -> str:
+        """
+        获取图片的MIME类型
+        """
+        image_type = imghdr.what(None, image_bytes)
+        if image_type:
+            return f"image/{image_type}"
+        return "image/png"  # 默认返回PNG类型
+    
+    def _encode_image_base64(self, image_bytes: bytes) -> str:
+        """
+        将图片编码为base64格式
+        """
+        return base64.b64encode(image_bytes).decode('utf-8')
+    
+    def _extract_images_from_word(self, doc: Document) -> List[Tuple[str, bytes]]:
+        """
+        从Word文档中提取图片
+        
+        Args:
+            doc: Word文档对象
+            
+        Returns:
+            图片列表，每项包含图片ID和二进制数据
+        """
+        images = []
+        document_part = doc.part
+        rels = document_part.rels
+        
+        for rel in rels.values():
+            if "image" in rel.reltype:
+                try:
+                    image_part = rel.target_part
+                    image_bytes = image_part.blob
+                    image_id = rel.rId
+                    images.append((image_id, image_bytes))
+                except Exception:
+                    continue
+                    
+        return images
     
     async def _parse_word_document(self, file_path: str) -> List[types.TextContent | types.ImageContent | types.EmbeddedResource]:
         """
@@ -151,21 +198,44 @@ class WordTool(BaseTool):
                 text=content_text
             ))
             
-            # 提取图片信息
+            # 提取图片信息和内容
             try:
-                # 计算文档中的图片数量
-                image_count = 0
-                for rel in doc.part.rels.values():
-                    if "image" in rel.target_ref:
-                        image_count += 1
+                # 提取文档中的所有图片
+                images = self._extract_images_from_word(doc)
                 
-                if image_count > 0:
-                    image_info = f"## 图片信息\n\n文档中包含 {image_count} 张图片。\n\n"
-                    image_info += "注意：当前仅提供图片数量信息，不提取图片内容。如需查看图片，请直接打开原始文档。\n"
-                    
+                if images:
+                    image_info = f"## 图片信息\n\n文档中包含 {len(images)} 张图片。\n\n"
                     results.append(types.TextContent(
                         type="text",
                         text=image_info
+                    ))
+                    
+                    # 返回图片内容
+                    for i, (image_id, image_bytes) in enumerate(images):
+                        try:
+                            # 获取图片MIME类型
+                            mime_type = self._get_image_mime_type(image_bytes)
+                            
+                            # 将图片添加到结果中
+                            image_base64 = self._encode_image_base64(image_bytes)
+                            results.append(types.TextContent(
+                                type="text",
+                                text=f"### 图片 {i+1}\n\n"
+                            ))
+                            results.append(types.ImageContent(
+                                type="image",
+                                data=image_base64,
+                                mimeType=mime_type
+                            ))
+                        except Exception as img_error:
+                            results.append(types.TextContent(
+                                type="text",
+                                text=f"警告: 处理图片 {i+1} 时出错: {str(img_error)}"
+                            ))
+                else:
+                    results.append(types.TextContent(
+                        type="text",
+                        text="## 图片信息\n\n文档中未包含图片。"
                     ))
             except Exception as img_error:
                 results.append(types.TextContent(

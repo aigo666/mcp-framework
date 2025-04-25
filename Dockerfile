@@ -4,11 +4,17 @@ FROM python:3.10-slim
 # Set working directory
 WORKDIR /app
 
-# Install build dependencies and curl for healthcheck
+# Install build dependencies and required libraries
 RUN apt-get update && apt-get install -y \
     build-essential \
     curl \
     poppler-utils \
+    tesseract-ocr \
+    tesseract-ocr-chi-sim \
+    tesseract-ocr-eng \
+    ffmpeg \
+    libsm6 \
+    libxext6 \
     && rm -rf /var/lib/apt/lists/*
 
 # Copy project files
