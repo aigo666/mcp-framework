@@ -7,10 +7,16 @@
   <img width="380" height="200" src="https://glama.ai/mcp/servers/@aigo666/mcp-framework/badge" />
 </a>
 
-## 🔥 最新更新
+## 🔥 最新特性：文档图片内容显示与理解
 
-- **图片处理增强**: 现在PDF和Word文档处理工具支持直接返回文档中的图片内容，不仅返回OCR文本，还通过MCP协议的ImageContent类型直接展示原始图片，实现真正的全文内容返回。
-- **Docker部署支持**: 提供了完整的Docker部署方案，方便本地或服务器快速部署MCP服务。
+最新版本现在支持在PDF和Word文档处理中，直接返回原始图片内容并进行OCR识别，使大语言模型能够同时理解文档中的文本和图像内容：
+
+- **图片内容直接显示**：文档中的图表、图像等可以直接在对话中显示，无需额外工具
+- **OCR文本识别**：自动提取图片中的文字内容，支持中英文多语言
+- **图片内容理解**：大模型可以"看到"文档中的图片，并基于图片内容进行分析和回答
+- **完整文档内容返回**：真正实现文档的全内容理解，包括文本、表格和图像
+
+这使得AI模型能够更全面地理解和分析文档内容，特别是对于包含图表、表单、流程图或其他可视化信息的文档尤为有价值。
 
 ## 主要功能
 
@@ -42,27 +48,20 @@
   - `file_path` - PDF文件的本地路径
   - `mode` - 处理模式（可选）：
     - `quick` - 快速预览模式，仅提取文本内容
-    - `full` - 完整解析模式，提取文本和图片内容（默认）
+    - `full` - 完整解析模式，提取文本、图片内容和OCR文本（默认）
 - **返回**: 
   - 快速预览模式：文档的文本内容
-  - 完整解析模式：文档的文本内容和**原始图片**（不仅是OCR文本）
-- **特点**:
-  - 支持图片直接显示：通过MCP的ImageContent类型返回图片
-  - OCR文本识别：自动识别图片中的文字内容
-  - 多语言支持：支持中英文等多语言OCR识别
+  - 完整解析模式：文档的文本内容、原始图片和OCR识别结果
 
 ### 3. Word文档解析
 
 使用`parse_word`工具可以解析Word文档，提取文本、表格和图片信息。
 
 - **用法**: `parse_word /path/to/document.docx`
-- **功能**: 解析Word文档并提取文本内容、表格和图片信息
+- **功能**: 解析Word文档并提取文本内容、表格和图片
 - **参数**: `file_path` - Word文档的本地路径
-- **返回**: 文档的文本内容、表格和**原始图片**
-- **特点**: 
-  - 使用python-docx库提供高质量的文本和表格提取
-  - 支持图片直接显示：完整提取并以ImageContent形式返回文档中的图片
-  - 高质量表格格式化：将Word表格转换为易读的格式
+- **返回**: 文档的文本内容、表格和原始图片
+- **特点**: 同时提供文档内嵌图像的显示和分析功能
 
 ### 4. Excel文件处理
 
@@ -160,8 +159,8 @@
    - 提供统一的文件处理接口
 
 2. **高效的文档处理**
-   - PDF处理：支持快速预览和完整解析两种模式，**支持图片直接返回**
-   - Word处理：精确提取文本、表格和图片，**支持文档内图片直接显示**
+   - PDF处理：支持快速预览和完整解析两种模式
+   - Word处理：精确提取文本、表格和图片
    - Excel处理：高效处理大型表格数据
 
 3. **强大的MCP工具扩展能力**
@@ -179,11 +178,6 @@
    - 完整的异常捕获和处理
    - 详细的错误信息反馈
    - 优雅的失败处理机制
-
-6. **容器化部署**
-   - 提供Docker部署方案
-   - 支持环境变量配置
-   - 文件系统挂载简化部署
 
 ## 项目结构
 
@@ -206,51 +200,6 @@ mcp_tool/
 ├── __main__.py
 └── server.py              # MCP服务器实现
 ```
-
-## 部署指南
-
-本框架提供了两种部署方式：
-
-### 方式一：本地Python部署
-
-1. 克隆仓库
-```bash
-git clone https://github.com/yourusername/mcp-framework.git
-cd mcp-framework
-```
-
-2. 安装依赖
-```bash
-pip install -e .
-```
-
-3. 运行服务
-```bash
-python -m mcp_tool --transport sse --port 8000
-```
-
-### 方式二：Docker部署
-
-1. 克隆仓库
-```bash
-git clone https://github.com/yourusername/mcp-framework.git
-cd mcp-framework
-```
-
-2. 使用部署脚本
-```bash
-chmod +x deploy.sh
-./deploy.sh
-```
-
-3. 配置部署环境
-在`.env`文件中配置挂载目录等设置：
-```
-HOST_MOUNT_SOURCE=/path/to/your/documents
-HOST_MOUNT_TARGET=/documents
-```
-
-更多详细部署指南请参考[DEPLOY.md](DEPLOY.md)。
 
 ## 开发指南
 
@@ -304,45 +253,161 @@ class YourTool(BaseTool):
         # 执行工具逻辑
         result = f"处理参数: {param1}, {param2}"
       
-        # 返回结果 - 支持文本和图片混合返回
+        # 返回结果
         return [types.TextContent(
             type="text",
             text=result
         )]
 ```
 
-### 图片处理示例
+## 部署指南
 
-如果您需要在工具中返回图片，可以使用以下代码片段：
+### 环境变量配置
 
-```python
-import base64
-import imghdr
+在`.env`文件中配置以下环境变量：
 
-def get_image_mime_type(image_bytes: bytes) -> str:
-    """获取图片的MIME类型"""
-    image_type = imghdr.what(None, image_bytes)
-    if image_type:
-        return f"image/{image_type}"
-    return "image/png"  # 默认返回PNG类型
+```bash
+# Server Configuration
+MCP_SERVER_PORT=8000        # 服务器端口
+MCP_SERVER_HOST=0.0.0.0     # 服务器主机
 
-def encode_image_base64(image_bytes: bytes) -> str:
-    """将图片编码为base64格式"""
-    return base64.b64encode(image_bytes).decode('utf-8')
+# 鉴权配置
+MCP_AUTH_URL=http://170.106.105.206:4000/users  # 鉴权服务地址
 
-# 在执行方法中返回图片
-image_bytes = get_image_data()  # 获取图片数据
-mime_type = get_image_mime_type(image_bytes)
-image_base64 = encode_image_base64(image_bytes)
+# MaxKB配置
+MAXKB_HOST=http://host.docker.internal:8080  # MaxKB API主机地址
+MAXKB_CHAT_ID=your_chat_id_here              # MaxKB聊天ID
+MAXKB_APPLICATION_ID=your_application_id_here # MaxKB应用ID
+MAXKB_AUTHORIZATION=your_authorization_key    # MaxKB授权密钥
 
-return [
-    types.TextContent(type="text", text="图片说明文本"),
-    types.ImageContent(
-        type="image",
-        data=image_base64,
-        mimeType=mime_type
-    )
-]
+# 调试模式
+DEBUG=false                 # 是否启用调试模式
+
+# 用户代理
+MCP_USER_AGENT="MCP Test Server (github.com/modelcontextprotocol/python-sdk)"
+
+# 本地目录挂载配置
+HOST_MOUNT_SOURCE=/path/to/your/local/directory  # 本地目录路径
+HOST_MOUNT_TARGET=/host_files                    # 容器内挂载路径
+```
+
+### 本地目录挂载
+
+框架支持将本地目录挂载到容器中，以便工具可以访问本地文件。配置方法：
+
+1. 在`.env`文件中设置`HOST_MOUNT_SOURCE`和`HOST_MOUNT_TARGET`环境变量
+2. `HOST_MOUNT_SOURCE`是你本地机器上的目录路径
+3. `HOST_MOUNT_TARGET`是容器内的挂载路径（默认为`/host_files`）
+
+使用工具时，可以直接引用本地文件路径，框架会自动将其转换为容器内的路径。例如：
+
+```
+# 使用PDF工具处理本地文件
+pdf "/Users/username/Documents/example.pdf"
+
+# 框架会自动将路径转换为容器内路径
+# 例如："/host_files/example.pdf"
+```
+
+这样，你就可以在不修改工具代码的情况下，轻松访问本地文件。
+
+### Docker部署（推荐）
+
+1. 初始设置：
+```bash
+# 克隆仓库
+git clone https://github.com/your-username/mcp-framework.git
+cd mcp-framework
+
+# 创建环境文件
+cp .env.example .env
+```
+
+2. 使用Docker Compose：
+```bash
+# 构建并启动
+docker compose up --build -d
+
+# 查看日志
+docker compose logs -f
+
+# 管理容器
+docker compose ps
+docker compose pause
+docker compose unpause
+docker compose down
+```
+
+3. 访问服务：
+   - SSE端点: http://localhost:8000/sse
+
+4. Cursor IDE配置：
+- 设置 → 功能 → 添加MCP服务器
+- 类型: "sse"
+- URL: `http://localhost:8000/sse?token=<your-token>` (替换 `<your-token>` 为您的 JWT Token)
+
+## 鉴权配置
+
+<details>
+<summary>点击展开查看详细的鉴权配置信息</summary>
+
+SSE 服务现在支持 API 鉴权机制，每个请求都需要携带有效的认证信息：
+
+1. 配置鉴权服务地址：
+   - 在 `.env` 文件中设置 `MCP_AUTH_URL` 环境变量（默认为 `http://170.106.105.206:4000/users` 该鉴权地址仅供测试，不保证长期稳定，建议使用以下项目自行部署）
+
+2. 客户端配置：
+   - 在 Cursor 插件中配置时，需要在 URL 中添加 `token` 查询参数
+   - 格式为 `http://your-server:8000/sse?token=<your-token>`
+   - 服务器会自动将 token 转换为 `Bearer <your-token>` 格式发送到鉴权服务
+
+3. 鉴权流程：
+   - 当 SSE 服务收到请求时，会从 URL 中提取 token 参数
+   - 然后向配置的鉴权地址发送请求，并传递 `Authorization: Bearer <your-token>` 头
+   - 只有鉴权成功（返回 200 状态码）的请求才会被处理
+   - 鉴权失败的请求会收到 401 Unauthorized 响应
+
+4. 推荐JWT鉴权服务：
+   - 我们推荐使用Jason Watmore的Node.js JWT鉴权服务作为参考实现
+   - 详细文档和示例代码：https://jasonwatmore.com/nodejs-jwt-authentication-tutorial-with-example-api
+   - 该实现提供了完整的用户注册、登录、令牌生成和验证功能
+   - 可以无缝集成到本框架的鉴权流程中
+
+</details>
+
+## 部署方式
+
+### 传统Python部署
+
+1. 安装系统依赖：
+```bash
+# Ubuntu/Debian
+sudo apt-get update
+sudo apt-get install -y poppler-utils tesseract-ocr tesseract-ocr-chi-sim
+
+# macOS
+brew install poppler tesseract tesseract-lang
+
+# Windows
+# 1. 下载并安装Tesseract: https://github.com/UB-Mannheim/tesseract/wiki
+# 2. 将Tesseract添加到系统PATH
+```
+
+2. 安装Python依赖：
+```bash
+# 创建虚拟环境
+python -m venv venv
+source venv/bin/activate  # Linux/Mac
+# 或
+.\venv\Scripts\activate  # Windows
+
+# 安装依赖
+pip install -r requirements.txt
+```
+
+3. 启动服务：
+```bash
+python -m mcp_tool
 ```
 
 ## 依赖项
