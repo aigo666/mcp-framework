@@ -1,8 +1,11 @@
 # MCP开发框架
 [![smithery badge](https://smithery.ai/badge/@aigo666/mcp-framework)](https://smithery.ai/server/@aigo666/mcp-framework)
-[![glama badge](https://glama.ai/mcp/servers/@aigo666/mcp-framework/badge)](https://glama.ai/mcp/servers/@aigo666/mcp-framework)
 
 一个强大的MCP（Model Context Protocol）开发框架，用于创建与大语言模型交互的自定义工具。该框架提供了一套完整的工具集，可以轻松地扩展Cursor IDE的功能，实现网页内容获取、文件处理（PDF、Word、Excel、CSV、Markdown）以及AI对话等高级功能。它具有强大的MCP工具扩展能力，使开发者能够快速构建和集成各种自定义工具。
+
+<a href="https://glama.ai/mcp/servers/@aigo666/mcp-framework">
+  <img width="380" height="200" src="https://glama.ai/mcp/servers/@aigo666/mcp-framework/badge" />
+</a>
 
 ## 主要功能
 
