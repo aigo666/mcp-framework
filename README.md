@@ -318,7 +318,7 @@ pdf "/Users/username/Documents/example.pdf"
 1. 初始设置：
 ```bash
 # 克隆仓库
-git clone https://github.com/your-username/mcp-framework.git
+git clone https://github.com/aigo666/mcp-framework.git
 cd mcp-framework
 
 # 创建环境文件
