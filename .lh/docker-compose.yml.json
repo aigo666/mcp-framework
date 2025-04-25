@@ -3,7 +3,7 @@
     "activeCommit": 0,
     "commits": [
         {
-            "activePatchIndex": 32,
+            "activePatchIndex": 38,
             "patches": [
                 {
                     "date": 1741245882812,
@@ -136,6 +136,30 @@
                 {
                     "date": 1741944050259,
                     "content": "Index: \n===================================================================\n--- \n+++ \n@@ -14,11 +14,14 @@\n       - MAXKB_HOST=${MAXKB_HOST:-http://host.docker.internal:8080}\n       - MAXKB_CHAT_ID=${MAXKB_CHAT_ID}\n       - MAXKB_APPLICATION_ID=${MAXKB_APPLICATION_ID}\n       - MAXKB_AUTHORIZATION=${MAXKB_AUTHORIZATION}\n+      # 挂载目录配置\n+      - HOST_MOUNT_SOURCE=${HOST_MOUNT_SOURCE}\n+      - HOST_MOUNT_TARGET=${HOST_MOUNT_TARGET}\n     volumes:\n-      # 挂载用户的本地目录到容器内的/host_files目录\n-      - /Users/liuyanzhi/Desktop:/host_files\n+      # 挂载用户的本地目录到容器内的指定目录\n+      - ${HOST_MOUNT_SOURCE:-/tmp}:${HOST_MOUNT_TARGET:-/host_files}\n     extra_hosts:\n       - \"host.docker.internal:host-gateway\"\n     restart: unless-stopped\n     healthcheck:\n"
+                },
+                {
+                    "date": 1744091487522,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -7,8 +7,9 @@\n       - \"${MCP_SERVER_PORT:-8000}:8000\"\n     environment:\n       - MCP_SERVER_PORT=${MCP_SERVER_PORT:-8000}\n       - MCP_SERVER_HOST=${MCP_SERVER_HOST:-0.0.0.0}\n+      - MCP_AUTH_URL=${MCP_AUTH_URL:-http://170.106.105.206:4000/users}\n       - DEBUG=${DEBUG:-false}\n       - MCP_USER_AGENT=${MCP_USER_AGENT:-\"MCP Test Server (github.com/modelcontextprotocol/python-sdk)\"}\n       # MaxKB配置\n       - MAXKB_HOST=${MAXKB_HOST:-http://host.docker.internal:8080}\n"
+                },
+                {
+                    "date": 1744095380690,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -25,9 +25,9 @@\n     extra_hosts:\n       - \"host.docker.internal:host-gateway\"\n     restart: unless-stopped\n     healthcheck:\n-      test: [\"CMD\", \"curl\", \"-f\", \"http://localhost:8000/sse\"]\n+      test: [\"CMD-SHELL\", \"curl -f -s http://localhost:8000/sse || exit 0\"]\n       interval: 30s\n       timeout: 10s\n       retries: 3\n       start_period: 10s \n\\ No newline at end of file\n"
+                },
+                {
+                    "date": 1744096071242,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -7,9 +7,8 @@\n       - \"${MCP_SERVER_PORT:-8000}:8000\"\n     environment:\n       - MCP_SERVER_PORT=${MCP_SERVER_PORT:-8000}\n       - MCP_SERVER_HOST=${MCP_SERVER_HOST:-0.0.0.0}\n-      - MCP_AUTH_URL=${MCP_AUTH_URL:-http://170.106.105.206:4000/users}\n       - DEBUG=${DEBUG:-false}\n       - MCP_USER_AGENT=${MCP_USER_AGENT:-\"MCP Test Server (github.com/modelcontextprotocol/python-sdk)\"}\n       # MaxKB配置\n       - MAXKB_HOST=${MAXKB_HOST:-http://host.docker.internal:8080}\n@@ -25,9 +24,9 @@\n     extra_hosts:\n       - \"host.docker.internal:host-gateway\"\n     restart: unless-stopped\n     healthcheck:\n-      test: [\"CMD-SHELL\", \"curl -f -s http://localhost:8000/sse || exit 0\"]\n+      test: [\"CMD\", \"curl\", \"-f\", \"http://localhost:8000/sse\"]\n       interval: 30s\n       timeout: 10s\n       retries: 3\n       start_period: 10s \n\\ No newline at end of file\n"
+                },
+                {
+                    "date": 1744098373399,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -7,8 +7,9 @@\n       - \"${MCP_SERVER_PORT:-8000}:8000\"\n     environment:\n       - MCP_SERVER_PORT=${MCP_SERVER_PORT:-8000}\n       - MCP_SERVER_HOST=${MCP_SERVER_HOST:-0.0.0.0}\n+      - MCP_AUTH_URL=${MCP_AUTH_URL:-http://170.106.105.206:4000/users}\n       - DEBUG=${DEBUG:-false}\n       - MCP_USER_AGENT=${MCP_USER_AGENT:-\"MCP Test Server (github.com/modelcontextprotocol/python-sdk)\"}\n       # MaxKB配置\n       - MAXKB_HOST=${MAXKB_HOST:-http://host.docker.internal:8080}\n"
+                },
+                {
+                    "date": 1744180924504,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -8,8 +8,9 @@\n     environment:\n       - MCP_SERVER_PORT=${MCP_SERVER_PORT:-8000}\n       - MCP_SERVER_HOST=${MCP_SERVER_HOST:-0.0.0.0}\n       - MCP_AUTH_URL=${MCP_AUTH_URL:-http://170.106.105.206:4000/users}\n+      - MCP_API_KEY=${MCP_API_KEY}\n       - DEBUG=${DEBUG:-false}\n       - MCP_USER_AGENT=${MCP_USER_AGENT:-\"MCP Test Server (github.com/modelcontextprotocol/python-sdk)\"}\n       # MaxKB配置\n       - MAXKB_HOST=${MAXKB_HOST:-http://host.docker.internal:8080}\n"
+                },
+                {
+                    "date": 1744181143262,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -8,9 +8,8 @@\n     environment:\n       - MCP_SERVER_PORT=${MCP_SERVER_PORT:-8000}\n       - MCP_SERVER_HOST=${MCP_SERVER_HOST:-0.0.0.0}\n       - MCP_AUTH_URL=${MCP_AUTH_URL:-http://170.106.105.206:4000/users}\n-      - MCP_API_KEY=${MCP_API_KEY}\n       - DEBUG=${DEBUG:-false}\n       - MCP_USER_AGENT=${MCP_USER_AGENT:-\"MCP Test Server (github.com/modelcontextprotocol/python-sdk)\"}\n       # MaxKB配置\n       - MAXKB_HOST=${MAXKB_HOST:-http://host.docker.internal:8080}\n"
                 }
             ],
             "date": 1741245882812,

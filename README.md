@@ -305,7 +305,7 @@ pdf "/Users/username/Documents/example.pdf"
 1. 初始设置：
 ```bash
 # 克隆仓库
-git clone https://github.com/aigo666/mcp-framework.git
+git clone https://github.com/your-username/mcp-framework.git
 cd mcp-framework
 
 # 创建环境文件
@@ -343,7 +343,7 @@ docker compose down
 SSE 服务现在支持 API 鉴权机制，每个请求都需要携带有效的认证信息：
 
 1. 配置鉴权服务地址：
-   - 在 `.env` 文件中设置 `MCP_AUTH_URL` 环境变量（默认为 `http://170.106.105.206:4000/users`）
+   - 在 `.env` 文件中设置 `MCP_AUTH_URL` 环境变量（默认为 `http://170.106.105.206:4000/users` 该鉴权地址仅供测试，不保证长期稳定，建议使用以下项目自行部署）
 
 2. 客户端配置：
    - 在 Cursor 插件中配置时，需要在 URL 中添加 `token` 查询参数
@@ -412,7 +412,7 @@ python -m mcp_tool
 
 ## 贡献指南
 
-1. Fork [本仓库](https://github.com/aigo666/mcp-framework)
+1. Fork仓库
 2. 创建功能分支 (`git checkout -b feature/amazing-feature`)
 3. 提交更改 (`git commit -m 'Add some amazing feature'`)
 4. 推送到分支 (`git push origin feature/amazing-feature`)

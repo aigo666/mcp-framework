@@ -3,7 +3,7 @@
     "activeCommit": 0,
     "commits": [
         {
-            "activePatchIndex": 13,
+            "activePatchIndex": 14,
             "patches": [
                 {
                     "date": 1741521106081,
@@ -60,6 +60,10 @@
                 {
                     "date": 1741944109737,
                     "content": "Index: \n===================================================================\n--- \n+++ \n@@ -50,46 +50,40 @@\n         解析PDF文件\n         \n         Args:\n             arguments: 参数字典，必须包含'file_path'键，可选'mode'键\n-            \n+        \n         Returns:\n-            PDF内容列表\n+            解析结果列表\n         \"\"\"\n         if \"file_path\" not in arguments:\n             return [types.TextContent(\n                 type=\"text\",\n                 text=\"错误: 缺少必要参数 'file_path'\"\n             )]\n         \n         file_path = arguments[\"file_path\"]\n-        mode = arguments.get(\"mode\", \"full\")\n+        # 处理文件路径，支持挂载目录的转换\n+        file_path = self.process_file_path(file_path)\n         \n-        # 检查文件是否存在\n         if not os.path.exists(file_path):\n             return [types.TextContent(\n                 type=\"text\",\n                 text=f\"错误: 文件不存在: {file_path}\"\n             )]\n-            \n-        # 检查文件扩展名\n+        \n         if not file_path.lower().endswith('.pdf'):\n             return [types.TextContent(\n                 type=\"text\",\n                 text=f\"错误: 文件不是PDF格式: {file_path}\"\n             )]\n         \n-        try:\n-            if mode == \"quick\":\n-                return await self._quick_preview_pdf(file_path)\n-            else:\n-                return await self._full_parse_pdf(file_path)\n-        except Exception as e:\n-            error_details = traceback.format_exc()\n-            return [types.TextContent(\n-                type=\"text\",\n-                text=f\"错误: 处理PDF文件时发生错误: {str(e)}\\n{error_details}\"\n-            )]\n+        mode = arguments.get(\"mode\", \"full\")\n+        \n+        if mode == \"quick\":\n+            return await self._quick_preview_pdf(file_path)\n+        else:\n+            return await self._full_parse_pdf(file_path)\n     \n     async def _quick_preview_pdf(self, file_path: str) -> List[types.TextContent | types.ImageContent | types.EmbeddedResource]:\n         \"\"\"\n         快速预览PDF文件，仅提取文本内容\n"
+                },
+                {
+                    "date": 1743651279285,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -25,9 +25,9 @@\n     1. 快速预览模式：仅提取文本内容，适用于大型PDF文件\n     2. 完整解析模式：提取文本和图片内容，提供更详细的文档分析\n     \"\"\"\n     \n-    name = \"pdf\"\n+    name = \"parse_pdf\"\n     description = \"解析PDF文件内容，支持快速预览和完整解析两种模式\"\n     input_schema = {\n         \"type\": \"object\",\n         \"required\": [\"file_path\"],\n"
                 }
             ],
             "date": 1741521106081,

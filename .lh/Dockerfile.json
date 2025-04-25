@@ -3,7 +3,7 @@
     "activeCommit": 0,
     "commits": [
         {
-            "activePatchIndex": 15,
+            "activePatchIndex": 24,
             "patches": [
                 {
                     "date": 1741245157547,
@@ -68,6 +68,42 @@
                 {
                     "date": 1741767018759,
                     "content": "Index: \n===================================================================\n--- \n+++ \n@@ -7,11 +7,8 @@\n # Install build dependencies and curl for healthcheck\n RUN apt-get update && apt-get install -y \\\n     build-essential \\\n     curl \\\n-    python3-dev \\\n-    libxml2-dev \\\n-    libxslt-dev \\\n     poppler-utils \\\n     && rm -rf /var/lib/apt/lists/*\n \n # Copy project files\n"
+                },
+                {
+                    "date": 1742297240834,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -5,8 +5,11 @@\n WORKDIR /app\n \n # Install build dependencies and curl for healthcheck\n RUN apt-get update && apt-get install -y \\\n+    gnupg \\\n+    && apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 0E98404D386FA1D9 \\\n+    && apt-get update && apt-get install -y \\\n     build-essential \\\n     curl \\\n     poppler-utils \\\n     && rm -rf /var/lib/apt/lists/*\n"
+                },
+                {
+                    "date": 1742297392893,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -4,12 +4,12 @@\n # Set working directory\n WORKDIR /app\n \n # Install build dependencies and curl for healthcheck\n-RUN apt-get update && apt-get install -y \\\n-    gnupg \\\n-    && apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 0E98404D386FA1D9 \\\n-    && apt-get update && apt-get install -y \\\n+RUN apt-get clean && \\\n+    rm -rf /var/lib/apt/lists/* && \\\n+    apt-get update --fix-missing && \\\n+    apt-get install -y \\\n     build-essential \\\n     curl \\\n     poppler-utils \\\n     && rm -rf /var/lib/apt/lists/*\n"
+                },
+                {
+                    "date": 1742297503072,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -1,15 +1,12 @@\n # Use Python 3.10 slim image as base\n-FROM python:3.10-slim\n+FROM python:3.10.13-slim-bullseye\n \n # Set working directory\n WORKDIR /app\n \n # Install build dependencies and curl for healthcheck\n-RUN apt-get clean && \\\n-    rm -rf /var/lib/apt/lists/* && \\\n-    apt-get update --fix-missing && \\\n-    apt-get install -y \\\n+RUN apt-get update && apt-get install -y \\\n     build-essential \\\n     curl \\\n     poppler-utils \\\n     && rm -rf /var/lib/apt/lists/*\n"
+                },
+                {
+                    "date": 1742297532430,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -1,6 +1,6 @@\n # Use Python 3.10 slim image as base\n-FROM python:3.10.13-slim-bullseye\n+FROM python:3.10-slim\n \n # Set working directory\n WORKDIR /app\n \n"
+                },
+                {
+                    "date": 1742297908270,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -4,9 +4,13 @@\n # Set working directory\n WORKDIR /app\n \n # Install build dependencies and curl for healthcheck\n-RUN apt-get update && apt-get install -y \\\n+RUN apt-get update && \\\n+    apt-get install -y --no-install-recommends gnupg2 && \\\n+    apt-key update && \\\n+    apt-get update && \\\n+    apt-get install -y \\\n     build-essential \\\n     curl \\\n     poppler-utils \\\n     && rm -rf /var/lib/apt/lists/*\n"
+                },
+                {
+                    "date": 1742298011438,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -1,16 +1,12 @@\n-# Use Python 3.10 slim image as base\n-FROM python:3.10-slim\n+# Use Python 3.10 bullseye image as base\n+FROM python:3.10-bullseye\n \n # Set working directory\n WORKDIR /app\n \n # Install build dependencies and curl for healthcheck\n-RUN apt-get update && \\\n-    apt-get install -y --no-install-recommends gnupg2 && \\\n-    apt-key update && \\\n-    apt-get update && \\\n-    apt-get install -y \\\n+RUN apt-get update && apt-get install -y \\\n     build-essential \\\n     curl \\\n     poppler-utils \\\n     && rm -rf /var/lib/apt/lists/*\n"
+                },
+                {
+                    "date": 1742298072974,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -1,6 +1,6 @@\n-# Use Python 3.10 bullseye image as base\n-FROM python:3.10-bullseye\n+# Use Python 3.10 slim image as base\n+FROM python:3.10-slim\n \n # Set working directory\n WORKDIR /app\n \n"
+                },
+                {
+                    "date": 1744091992789,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -1,6 +1,6 @@\n # Use Python 3.10 slim image as base\n-FROM python:3.10-slim\n+FROM mirrors.ustc.edu.cn/python:3.10-slim\n \n # Set working directory\n WORKDIR /app\n \n"
+                },
+                {
+                    "date": 1744092113363,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -1,6 +1,6 @@\n # Use Python 3.10 slim image as base\n-FROM mirrors.ustc.edu.cn/python:3.10-slim\n+FROM python:3.10-slim\n \n # Set working directory\n WORKDIR /app\n \n"
                 }
             ],
             "date": 1741245157547,
