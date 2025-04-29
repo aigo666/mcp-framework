@@ -211,27 +211,41 @@ class WordTool(BaseTool):
                     ))
                     
                     # 返回图片内容
+                    successful_images = 0
+                    skipped_images = 0
                     for i, (image_id, image_bytes) in enumerate(images):
                         try:
-                            # 获取图片MIME类型
+                            # 获取图片MIME类型并检查是否支持
                             mime_type = self._get_image_mime_type(image_bytes)
+                            supported_mime_types = ["image/jpeg", "image/png", "image/gif", "image/webp"]
+                            
+                            # 如果格式不受支持，则跳过该图片
+                            if mime_type not in supported_mime_types:
+                                skipped_images += 1
+                                continue
                             
                             # 将图片添加到结果中
                             image_base64 = self._encode_image_base64(image_bytes)
                             results.append(types.TextContent(
                                 type="text",
-                                text=f"### 图片 {i+1}\n\n"
+                                text=f"### 图片 {successful_images + 1}\n\n"
                             ))
                             results.append(types.ImageContent(
                                 type="image",
                                 data=image_base64,
                                 mimeType=mime_type
                             ))
-                        except Exception as img_error:
-                            results.append(types.TextContent(
-                                type="text",
-                                text=f"警告: 处理图片 {i+1} 时出错: {str(img_error)}"
-                            ))
+                            successful_images += 1
+                        except Exception:
+                            # 捕获所有异常，但不中断处理流程
+                            skipped_images += 1
+                    
+                    # 如果有跳过的图片，添加简单提示
+                    if skipped_images > 0:
+                        results.append(types.TextContent(
+                            type="text",
+                            text=f"注意: 文档中有 {skipped_images} 张图片因格式问题已跳过处理。"
+                        ))
                 else:
                     results.append(types.TextContent(
                         type="text",

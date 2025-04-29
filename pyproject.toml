@@ -1,6 +1,6 @@
 [project]
 name = "mcp-simple-tool"
-version = "0.1.0"
+version = "1.2.0"
 description = "MCP工具集合，包含文件处理和网页获取功能"
 readme = "README.md"
 requires-python = ">=3.10"

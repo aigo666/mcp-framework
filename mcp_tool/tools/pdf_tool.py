@@ -129,7 +129,7 @@ class PdfTool(BaseTool):
         if image_type:
             return f"image/{image_type}"
         return "image/png"  # 默认返回PNG类型
-    
+
     def _encode_image_base64(self, image_bytes: bytes) -> str:
         """
         将图片编码为base64格式
@@ -199,20 +199,30 @@ class PdfTool(BaseTool):
                         text=f"第{page_num + 1}页包含{len(image_list)}张图片"
                     ))
                     
+                    # 处理各页的图片
+                    skipped_images = 0
+                    successful_images = 0
+                    
                     for img_idx, img_info in enumerate(image_list):
                         try:
                             xref = img_info[0]
                             base_image = doc.extract_image(xref)
                             image_bytes = base_image["image"]
                             
-                            # 获取图片MIME类型
+                            # 获取图片MIME类型并检查是否支持
                             mime_type = self._get_image_mime_type(image_bytes)
+                            supported_mime_types = ["image/jpeg", "image/png", "image/gif", "image/webp"]
+                            
+                            # 如果格式不受支持，则跳过该图片
+                            if mime_type not in supported_mime_types:
+                                skipped_images += 1
+                                continue
                             
                             # 添加图片OCR识别结果
                             image_analysis = await self._analyze_image(image_bytes)
                             results.append(types.TextContent(
                                 type="text",
-                                text=f"第{page_num + 1}页 图片{img_idx + 1}分析结果：\n{image_analysis}\n---"
+                                text=f"第{page_num + 1}页 图片{successful_images + 1}分析结果：\n{image_analysis}\n---"
                             ))
                             
                             # 添加图片内容，直接返回图片而非只返回OCR文本
@@ -223,11 +233,17 @@ class PdfTool(BaseTool):
                                 mimeType=mime_type
                             ))
                             
-                        except Exception as img_error:
-                            results.append(types.TextContent(
-                                type="text",
-                                text=f"警告: 处理第{page_num + 1}页图片{img_idx + 1}时出错: {str(img_error)}"
-                            ))
+                            successful_images += 1
+                        except Exception:
+                            # 捕获所有异常，但不中断处理流程
+                            skipped_images += 1
+                    
+                    # 如果有跳过的图片，添加简单提示
+                    if skipped_images > 0:
+                        results.append(types.TextContent(
+                            type="text",
+                            text=f"注意: 第{page_num + 1}页有 {skipped_images} 张图片因格式问题已跳过处理。"
+                        ))
             
             doc.close()
             return results

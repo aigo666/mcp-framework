@@ -3,7 +3,7 @@
     "activeCommit": 0,
     "commits": [
         {
-            "activePatchIndex": 38,
+            "activePatchIndex": 39,
             "patches": [
                 {
                     "date": 1741245882812,
@@ -160,6 +160,10 @@
                 {
                     "date": 1744181143262,
                     "content": "Index: \n===================================================================\n--- \n+++ \n@@ -8,9 +8,8 @@\n     environment:\n       - MCP_SERVER_PORT=${MCP_SERVER_PORT:-8000}\n       - MCP_SERVER_HOST=${MCP_SERVER_HOST:-0.0.0.0}\n       - MCP_AUTH_URL=${MCP_AUTH_URL:-http://170.106.105.206:4000/users}\n-      - MCP_API_KEY=${MCP_API_KEY}\n       - DEBUG=${DEBUG:-false}\n       - MCP_USER_AGENT=${MCP_USER_AGENT:-\"MCP Test Server (github.com/modelcontextprotocol/python-sdk)\"}\n       # MaxKB配置\n       - MAXKB_HOST=${MAXKB_HOST:-http://host.docker.internal:8080}\n"
+                },
+                {
+                    "date": 1745551294635,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -2,8 +2,9 @@\n \n services:\n   mcp-server:\n     build: .\n+    container_name: mcp-framework-server\n     ports:\n       - \"${MCP_SERVER_PORT:-8000}:8000\"\n     environment:\n       - MCP_SERVER_PORT=${MCP_SERVER_PORT:-8000}\n@@ -16,10 +17,10 @@\n       - MAXKB_CHAT_ID=${MAXKB_CHAT_ID}\n       - MAXKB_APPLICATION_ID=${MAXKB_APPLICATION_ID}\n       - MAXKB_AUTHORIZATION=${MAXKB_AUTHORIZATION}\n       # 挂载目录配置\n-      - HOST_MOUNT_SOURCE=${HOST_MOUNT_SOURCE}\n-      - HOST_MOUNT_TARGET=${HOST_MOUNT_TARGET}\n+      - HOST_MOUNT_SOURCE=${HOST_MOUNT_SOURCE:-/tmp}\n+      - HOST_MOUNT_TARGET=${HOST_MOUNT_TARGET:-/host_files}\n     volumes:\n       # 挂载用户的本地目录到容器内的指定目录\n       - ${HOST_MOUNT_SOURCE:-/tmp}:${HOST_MOUNT_TARGET:-/host_files}\n     extra_hosts:\n"
                 }
             ],
             "date": 1741245882812,
