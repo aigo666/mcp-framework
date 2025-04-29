@@ -3,7 +3,7 @@
     "activeCommit": 0,
     "commits": [
         {
-            "activePatchIndex": 24,
+            "activePatchIndex": 27,
             "patches": [
                 {
                     "date": 1741245157547,
@@ -104,6 +104,18 @@
                 {
                     "date": 1744092113363,
                     "content": "Index: \n===================================================================\n--- \n+++ \n@@ -1,6 +1,6 @@\n # Use Python 3.10 slim image as base\n-FROM mirrors.ustc.edu.cn/python:3.10-slim\n+FROM python:3.10-slim\n \n # Set working directory\n WORKDIR /app\n \n"
+                },
+                {
+                    "date": 1745551240589,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -0,0 +1,30 @@\n+# Use Python 3.10 slim image as base\n+FROM python:3.10-slim\n+\n+# Set working directory\n+WORKDIR /app\n+\n+# Install build dependencies and required libraries\n+RUN apt-get update && apt-get install -y \\\n+    build-essential \\\n+    curl \\\n+    poppler-utils \\\n+    tesseract-ocr \\\n+    tesseract-ocr-chi-sim \\\n+    tesseract-ocr-eng \\\n+    ffmpeg \\\n+    libsm6 \\\n+    libxext6 \\\n+    && rm -rf /var/lib/apt/lists/*\n+\n+# Copy project files\n+COPY . .\n+\n+# Install the package in editable mode with proper path\n+RUN pip install --no-cache-dir -e .\n+\n+# Expose the port\n+EXPOSE 8000\n+\n+# Run the server with SSE transport\n+CMD [\"python\", \"-m\", \"mcp_tool\", \"--transport\", \"sse\", \"--port\", \"8000\"] \n\\ No newline at end of file\n"
+                },
+                {
+                    "date": 1745917875171,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -22,32 +22,14 @@\n \n # Install the package in editable mode with proper path\n RUN pip install --no-cache-dir -e .\n \n-# Expose the port\n-EXPOSE 8000\n+# Install dependencies\n+RUN pip install --no-cache-dir -r requirements.txt\n \n-# Run the server with SSE transport\n-CMD [\"python\", \"-m\", \"mcp_tool\", \"--transport\", \"sse\", \"--port\", \"8000\"] \n-# Use Python 3.10 slim image as base\n-FROM python:3.10-slim\n+# Install image processing library Pillow\n+RUN pip install --no-cache-dir Pillow\n \n-# Set working directory\n-WORKDIR /app\n-\n-# Install build dependencies and curl for healthcheck\n-RUN apt-get update && apt-get install -y \\\n-    build-essential \\\n-    curl \\\n-    poppler-utils \\\n-    && rm -rf /var/lib/apt/lists/*\n-\n-# Copy project files\n-COPY . .\n-\n-# Install the package in editable mode with proper path\n-RUN pip install --no-cache-dir -e .\n-\n # Expose the port\n EXPOSE 8000\n \n # Run the server with SSE transport\n"
+                },
+                {
+                    "date": 1745917895343,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -22,14 +22,8 @@\n \n # Install the package in editable mode with proper path\n RUN pip install --no-cache-dir -e .\n \n-# Install dependencies\n-RUN pip install --no-cache-dir -r requirements.txt\n-\n-# Install image processing library Pillow\n-RUN pip install --no-cache-dir Pillow\n-\n # Expose the port\n EXPOSE 8000\n \n # Run the server with SSE transport\n"
                 }
             ],
             "date": 1741245157547,

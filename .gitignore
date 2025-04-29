@@ -28,7 +28,6 @@ wheels/
 .lh/
 
 # Environment
-.env
 .venv
 env/
 venv/
