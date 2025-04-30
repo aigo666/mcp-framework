@@ -15,6 +15,7 @@ RUN apt-get update && apt-get install -y \
     ffmpeg \
     libsm6 \
     libxext6 \
+    libreoffice \
     && rm -rf /var/lib/apt/lists/*
 
 # Copy project files
