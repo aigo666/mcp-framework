@@ -1,3 +1,5 @@
+[![MseeP.ai Security Assessment Badge](https://mseep.net/pr/aigo666-mcp-framework-badge.png)](https://mseep.ai/app/aigo666-mcp-framework)
+
 # MCP开发框架
 [![Verified on MseeP](https://mseep.ai/badge.svg)](https://mseep.ai/app/34780cde-ee17-4a7b-b9ee-356f41fc9e77) [![smithery badge](https://smithery.ai/badge/@aigo666/mcp-framework)](https://smithery.ai/server/@aigo666/mcp-framework)
 
